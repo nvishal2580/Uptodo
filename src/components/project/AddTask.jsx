@@ -6,9 +6,9 @@ import CalenderIcon from "../../assets/icons/CalenderIcon";
 import FilterList from '../common/FilterList';
 import ListItems from "../common/ListItems";
 import DatePicker from "react-datepicker";
+import { v4 as uuidv4 } from 'uuid';
 
-
-function AddTask({ type = "task", submitHandler, show, setModal, labelList,priorityList }) {
+function AddTask({type:typedata, handleAddTask, show, setModal, labelList,priorityList,handleAddColumn }) {
   const [title, setTitle] = useState("");
   const [details, setDetails] = useState("");
   const [labels, setLabels] = useState({count:0,list : []});
@@ -16,21 +16,53 @@ function AddTask({ type = "task", submitHandler, show, setModal, labelList,prior
   const [priority,setPriority] = useState({count:0,list : []});
   const [deadline,setDeadline] = useState(new Date());
 
-  const setLabelView = (id) => {
+  const clearData = () => {
+    console.log('data reset');
+    setTitle("");
+    setDeadline(null);
+    setDetails("");
+    setLabels({count:0,list:[]})
+    setPriority({count:0,list:[]})
+    setModal(false);
+  }
 
+  const setLabelView = (id) => {
     if(showLabel === id){
       setShowLabel("");
       return;
     }
     setShowLabel(id);
   }
-
   console.log('AddTask rendered');
 
   useEffect(() => {
-    
     return () => console.log('unmounted');
-  },[])
+  },[]);
+
+  const handleSubmit = () => {
+
+    const newTask = {
+      id:uuidv4().toString(),
+      title:title,
+      description:details,
+      deadline:deadline,
+      priority:priority,
+      labels:labels
+    }
+
+    if(typedata.type === "task"){
+      handleAddTask(typedata.col,newTask);
+      clearData();
+      return;
+    }
+
+    if(typedata.type === 'column'){
+      handleAddColumn(title);
+      setTitle("");
+      return;
+    }
+
+  }
 
   return (
     <div
@@ -56,7 +88,7 @@ function AddTask({ type = "task", submitHandler, show, setModal, labelList,prior
           <div className="flex flex-col bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div className="mb-4">
               <span className="font-bold block border-b-[1px] border-slate-400">
-                Add {type[0].toUpperCase() + type.substring(1)}
+                Add {typedata.type[0].toUpperCase() + typedata.type.substring(1)}
               </span>
             </div>
             <div>
@@ -71,7 +103,7 @@ function AddTask({ type = "task", submitHandler, show, setModal, labelList,prior
                   customStyle="focus:outline-slate-400"
                 />
               </div>
-              {type === "task" && (
+              {typedata.type === "task" && (
                 <div>
                   <div className="mb-4">
                     <Input
@@ -130,6 +162,7 @@ function AddTask({ type = "task", submitHandler, show, setModal, labelList,prior
             </button>
             <button
               type="button"
+              onClick={handleSubmit}
               className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none  focus:ring-offset-2  active:outline-none sm:ml-3 sm:w-auto sm:text-sm"
             >
               Add

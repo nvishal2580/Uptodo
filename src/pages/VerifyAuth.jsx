@@ -11,7 +11,13 @@ function VerifyAuth() {
     const naivgate = useNavigate();
 
     useEffect(() => {
+
+        if(auth.currentUser.emailVerified){
+            naivgate('/app');
+        }
+
         const unsubscribe = auth.onAuthStateChanged((user) => {
+            // console.log('auth state changed',user)
             if(user.emailVerified){
                 naivgate('/app');
             }
@@ -28,6 +34,7 @@ function VerifyAuth() {
         }).catch(error => {
             toast.error(error.message);
         })
+    
     }
 
   return <div className='w-full justify-center items-center h-screen flex bg-[#F1F5F8]'>
@@ -42,6 +49,7 @@ function VerifyAuth() {
             <div className='text-center px-10 mt-20 mb-5'>
                 <button disabled={mailSent} className={`bg-[#09748A] text-white w-full p-2 rounded ${mailSent === true ? "cursor-not-allowed" : ""}`} onClick={handleVerify} >Send Verification Link</button>
             </div>
+            <p>If you have verified please refresh</p>
             <hr />
             <div className='flex justify-center mt-2'>
                 <div className='mx-2'>

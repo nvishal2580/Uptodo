@@ -1,25 +1,34 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { Link, NavLink,useParams } from 'react-router-dom';
+import DotsHorizontal from '../../assets/icons/DotsHorizontal';
 
-function SideItem({icon,data,projectId}) {
+function SideItem({Icon,data,projectId}) {
 
-    const params=useParams();
+  const [isActive ,setActive] = useState(false);
+  const params=useParams();
 
-    console.log(data,projectId);
+  useEffect(() => {
+    if(projectId && projectId === data.projectId){
+      setActive(true);
+      console.log('active set ',projectId);
+    }else{
+      setActive(false);
+    }
+  },[projectId])
 
-  return <div className={`flex group pl-3 py-2 w-full items-center  hover:bg-slate-200 cursor-pointer  ${projectId && projectId === data.projectId ? 'border-r-4 bg-slate-200 border-r-cyan-500' : ''}`}>
+  return <div className={`flex group pl-3 py-2 w-full items-center rounded-l-md hover:bg-slate-200 cursor-pointer  ${isActive ? 'border-r-4 bg-[#d5e3fc] border-r-blue-500 font-semibold' : ''}`}>
       {/* <button className='flex items-center' > */}
-        <Link to={`project/${data.projectId}`} className='flex items-center' >
+      <Link to={`project/${data.projectId}`} className='flex items-center' >
       <div className='h-full align-middle'>
-          {icon}
+          <Icon strokeWidth={isActive? "2":""}  />
       </div>
-      <div className='pl-3 text-lg grow text-left '>{data.projectName}</div>
+      <div className={`pl-3 text-lg grow text-left ${isActive ? 'font-semibold' : ''}`}>{data.projectName}</div>
         
-        </Link>
+      </Link>
       {/* </button> */}
       <div className='grow'>{""}</div>
-      <button className='bg-yellow-400  hidden group-hover:block'>
-        hh
+      <button className='  hidden group-hover:block'>
+        <DotsHorizontal />
       </button>
   </div>;
 }

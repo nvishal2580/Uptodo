@@ -1,107 +1,17 @@
 import React, { useState } from "react";
-import data from "./InitialData";
 import Column from "./Column";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
+import AddSimpleIcon from '../../assets/icons/AddSimpleIcon';
 
+function areEqueal(prevProps,nextPros){
+  return prevProps.tasks && prevProps.columns && prevProps.columnOrder && prevProps.tasks === nextPros.tasks && prevProps.columns === nextPros.columns && prevProps.columnOrder === nextPros.columnOrder;
+}
 
-function App() {
-  const [tasks, setTasks] = useState(data.tasks);
-  const [columns, setColumns] = useState(data.colums);
-  const [columnOrder, setColumnOrder] = useState(data.columnOrder);
-  const [loading, setLoading] = useState(false);
-
-  const handleAddTask = (columnId, text) => {
-    console.log(columnId, text);
-    setLoading(true);
-    const Id = uuidv4().toString();
-    const newTask = {
-      id: Id,
-      text: text,
-      subtext: "",
-    };
-    const newTaskList = {
-      ...tasks,
-      [Id]: newTask,
-    };
-
-    let col = columns[columnId];
-    let newTaskIds = [...col.taskIds, Id];
-    col = { ...col, taskIds: newTaskIds };
-    console.log(col);
-
-    let newColumns = { ...columns };
-    newColumns = { ...newColumns, [columnId]: col };
-
-    console.log(newTaskList);
-    console.log(newColumns);
-
-    setTasks(newTaskList);
-    setColumns(newColumns);
-
-    // console.log(newTaskList);
-    // console.log(newColumns);
-    setLoading(false);
-  };
-
-  const handleDeleteColumn = (columnId) => {
-    const col = columns[columnId];
-    const taskIds = col.taskIds;
-    let newTasks = { ...tasks };
-    taskIds.forEach((taskId) => {
-      delete newTasks[taskId];
-    });
-    let newColumns = { ...columns };
-    delete newColumns[columnId];
-    const newColumnOrder = columnOrder.filter((colId) => colId !== columnId);
-    setTasks(newTasks);
-    setColumns(newColumns);
-    setColumnOrder(newColumnOrder);
-  };
-
-  const handleDeleteTask = (taskId, columnId) => {
-    console.log(columnId, taskId);
-
-    let newTasks = { ...tasks };
-    delete newTasks[taskId];
-    const newTaskIds = columns[columnId].taskIds.filter((id) => id !== taskId);
-    const newColumn = columns;
-    newColumn[columnId].taskIds = newTaskIds;
-    const newColumnOrder = [...columnOrder];
-    setColumns(newColumn);
-    setTasks(newTasks);
-    setColumnOrder(newColumnOrder);
-    console.log(newTasks);
-    console.log(newColumn);
-  };
-
-  console.log("index.js rendered");
-
-  const handleAddColumn = (title) => {
-    setLoading(true);
-    const Id = uuidv4().toString();
-    const newColumn = {
-      id: Id,
-      title: title,
-      taskIds: [],
-    };
-
-    const newColumns = {
-      ...columns,
-      [Id]: newColumn,
-    };
-    const newColumnOrder = [...columnOrder, Id];
-    setColumns(newColumns);
-    setColumnOrder(newColumnOrder);
-
-    console.log(newColumnOrder);
-    console.log(newColumns);
-
-    setLoading(false);
-  };
+const ProjectContainer =React.memo(({columnItemList,ItemList,handleMenuClick,handleSetAddType,columnOrder,setColumnOrder,columns,setColumns,tasks,setTasks,handleAddTask,handleDeleteTask,handleDeleteColumn}) => {
 
   const onDragEnd = (result) => {
-    // console.log(result);
+    console.log('on drag end',result);
     const { source, destination, draggableId, type } = result;
 
     if (!destination) return;
@@ -113,12 +23,13 @@ function App() {
       return;
 
     if (type === "column") {
+
       const newColumnOrder = [...columnOrder];
       newColumnOrder.splice(source.index, 1);
       newColumnOrder.splice(destination.index, 0, draggableId);
 
+      console.log(newColumnOrder);
       setColumnOrder(newColumnOrder);
-
       return;
     }
 
@@ -171,19 +82,22 @@ function App() {
 
   const onDragStart = (result) => {};
 
+  
+
   return (
-    <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
+    <DragDropContext onDragStart={onDragStart} onDragEnd={onDragEnd}  >
       <Droppable droppableId="all-columns" type="column" direction="horizontal">
         {(provided, snapshot) => (
           <div
-            className={`flex overflow-x-scroll h-[calc(100vh_-_118px)] w-full overflow-y-hidden ${snapshot.isDraggingOver ? 'bg-pink-400': 'bg-white'}`}
+            className={`flex overflow-x-auto h-[calc(100vh_-_118px)] w-full overflow-y-none ${snapshot.isDraggingOver ? '': 'bg-transparent'}`}
             {...provided.droppableProps}
             ref={provided.innerRef}
             isDraggingOver={snapshot.isDraggingOver}
           >
-            {columnOrder.map((columnId, index) => {
+            {columns && columnOrder?.map((columnId, index) => {
               const column = columns[columnId];
-              const columnTasks = column.taskIds.map((taskId) => tasks[taskId]);
+              const columnTasks = column?.taskIds?.map((taskId) => tasks[taskId]);
+              
               return (
                 <Column
                   key={columnId}
@@ -196,16 +110,25 @@ function App() {
                   handleAddTask={handleAddTask}
                   handleDeleteTask={handleDeleteTask}
                   handleDeleteColumn={handleDeleteColumn}
+                  handleSetAddType={handleSetAddType}
+                  ItemList={ItemList}
+                  handleMenuClick={handleMenuClick}
+                  columnItemList={columnItemList}
                 />
               );
             })}
-            
+           <div className={`mr-8 pt-1 ${snapshot.isDraggingOver ? "hidden" : ""}`}>
+            <button onClick={() => handleSetAddType({type:"column"})} className=" w-72 flex justify-center   border-[1px] py-1 bg-transparent border-stone-400 rounded">
+              <span className="font-semibold" >Add Section</span>
+            </button>
+  
+        </div>
             {provided.placeholder}
           </div>
         )}
       </Droppable>
     </DragDropContext>
   );
-}
+},areEqueal);
 
-export default App;
+export default ProjectContainer;

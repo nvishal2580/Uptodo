@@ -1,8 +1,9 @@
 import React,{useState} from 'react';
 import { Link } from 'react-router-dom';
-import {auth} from '../services/firebase/firebase';
+import {auth,db} from '../services/firebase/firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import {useNavigate} from 'react-router-dom';
+
 
 import Quote from '../components/common/Quote';
 import Input from '../components/common/Input';
@@ -10,6 +11,7 @@ import GoogleLogo from '../assets/logos/google_logo.svg';
 import quotes from '../services/quotes';
 import SpinIcon from '../assets/icons/SpinIcon';
 import GlobeIcon from '../assets/icons/GlobeIcon';
+import { doc, setDoc } from 'firebase/firestore';
 
 function Register() {
     const navigate = useNavigate();
@@ -30,7 +32,7 @@ function Register() {
         }
         return true;
     }
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
         setProgress(true);
         const data = {
@@ -42,7 +44,7 @@ function Register() {
             return;
         }
 
-            auth.createUserWithEmailAndPassword(email,password).then((userCredential) => {
+            auth.createUserWithEmailAndPassword(email,password).then(async(userCredential) => {
                 // user singed in
                 const user = userCredential.user;
                 console.log(user);
@@ -50,6 +52,16 @@ function Register() {
                 //     console.log('link opened by user');
                 //     console.log(auth.currentUser);
                 // });
+                try {
+                    
+                   await setDoc(doc(db,'users',auth.currentUser.uid),{
+                        id:auth.currentUser.uid,
+                        isVerified:false,
+                    })
+                } catch (error) {
+                    toast.error(error.message)
+                }
+
                 toast('verification email sent !');
                 // auth.signOut();
                 navigate('/login');
