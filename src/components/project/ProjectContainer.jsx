@@ -3,14 +3,17 @@ import Column from "./Column";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
 import AddSimpleIcon from '../../assets/icons/AddSimpleIcon';
+import { toast } from "react-toastify";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../services/firebase/firebase";
 
 function areEqueal(prevProps,nextPros){
   return prevProps.tasks && prevProps.columns && prevProps.columnOrder && prevProps.tasks === nextPros.tasks && prevProps.columns === nextPros.columns && prevProps.columnOrder === nextPros.columnOrder;
 }
 
-const ProjectContainer =React.memo(({columnItemList,ItemList,handleMenuClick,handleSetAddType,columnOrder,setColumnOrder,columns,setColumns,tasks,setTasks,handleAddTask,handleDeleteTask,handleDeleteColumn}) => {
+const ProjectContainer =React.memo(({columnItemList,ItemList,projectId,handleMenuClick,handleSetAddType,columnOrder,setColumnOrder,columns,setColumns,tasks,setTasks,handleAddTask,handleDeleteTask,handleDeleteColumn}) => {
 
-  const onDragEnd = (result) => {
+  const onDragEnd = async(result) => {
     console.log('on drag end',result);
     const { source, destination, draggableId, type } = result;
 
@@ -30,6 +33,15 @@ const ProjectContainer =React.memo(({columnItemList,ItemList,handleMenuClick,han
 
       console.log(newColumnOrder);
       setColumnOrder(newColumnOrder);
+
+      try {
+        await updateDoc(doc(db,'projects',projectId),{
+          columnOrder:newColumnOrder
+        })
+      } catch (error) {
+        toast.error('something went wrong');
+      }
+
       return;
     }
 
@@ -52,6 +64,13 @@ const ProjectContainer =React.memo(({columnItemList,ItemList,handleMenuClick,han
       };
 
       setColumns(newColumns);
+      try {
+        await updateDoc(doc(db,'projects',projectId),{
+          columns : newColumns
+        })
+      } catch (error) {
+        toast.error('something went wrong');
+      }
 
       return;
     }
@@ -78,6 +97,14 @@ const ProjectContainer =React.memo(({columnItemList,ItemList,handleMenuClick,han
     };
 
     setColumns(newColumns);
+    try {
+      await updateDoc(doc(db,'projects',projectId),{
+        columns : newColumns
+      })
+    } catch (error) {
+      toast.error('something went wrong');
+    }
+
   };
 
   const onDragStart = (result) => {};

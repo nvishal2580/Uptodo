@@ -9,6 +9,7 @@ import AddProject from "../components/project/AddProject";
 import SideNav from "../components/sidebar/SideNav";
 import Navbar from "../components/sidebar/Navbar";
 import { toast } from "react-toastify";
+import ManageTeam from "../components/project/ManageTeam";
 
 function Dashboard() {
   const [projectList, setProjectList] = useState([
@@ -126,7 +127,8 @@ function Dashboard() {
                       setProjectId={setProjectId}
                     />
                   }
-                ></Route>
+                >
+                </Route>
               </Routes>
             </div>
           </div>

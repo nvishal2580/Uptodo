@@ -91,6 +91,7 @@ function AddTask({type:typedata, handleAddTask, show, setModal, labelList,priori
                 Add {typedata.type[0].toUpperCase() + typedata.type.substring(1)}
               </span>
             </div>
+            
             <div>
               <div className="mb-4">
                 <Input

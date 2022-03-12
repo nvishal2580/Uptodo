@@ -3,13 +3,15 @@ import AddTask from "../components/project/AddTask";
 import ProjectContainer from "../components/project/ProjectContainer";
 import {v4 as uuidv4} from 'uuid';
 import data from "../components/project/InitialData";
-import {collection, onSnapshot,doc,runTransaction, Firestore, setDoc,updateDoc} from 'firebase/firestore'
+import {collection, onSnapshot,doc,runTransaction, Firestore, setDoc,updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore'
 import { db } from "../services/firebase/firebase";
-import _ from 'lodash';
+import _, { isEqual } from 'lodash';
 import { toast } from "react-toastify";
 import ChatAltIcon from "../assets/icons/ChatAltIcon";
 import UserIcon from "../assets/icons/UsersIcon";
 import DotsHorizontal from "../assets/icons/DotsHorizontal";
+import ManageTeam from "../components/project/ManageTeam";
+import { Route, Routes ,useParams} from "react-router-dom";
 
 
 function ProjectPage({ projectId, setProjectId }) {
@@ -31,7 +33,8 @@ function ProjectPage({ projectId, setProjectId }) {
     {id:"4" , name:"Priority 4"}
   ]);
 
-
+  const params = useParams()
+  console.log(params);
   
   const [tasks, setTasks] = useState(data.tasks);
   const [columns, setColumns] = useState(data.colums);
@@ -39,6 +42,10 @@ function ProjectPage({ projectId, setProjectId }) {
   const [loading, setLoading] = useState(true);
   const [addType,setAddType] = useState(null); // used to store in which column we have to add task
   const [title,setTitle] = useState("");
+  const [membersList,setMembersList] = useState([]);
+  const [waitList,setWaitList] = useState([]);
+  const [showTeam,setShowTeam] = useState(false);
+  const [adminId,setAdminId] = useState(null);
 
   useEffect(()=>{
       setLoading(true);
@@ -46,7 +53,8 @@ function ProjectPage({ projectId, setProjectId }) {
       if(projectId === null || projectId === undefined || projectId.length < 2) return;
       const unsub = onSnapshot(doc(db,'projects',projectId),(snapshot) => {
          const data = snapshot.data();
-         if(_.isEqual(data.tasks,tasks) && _.isEqual(data.columns,columns) && _.isEqual(data.columnOrder,columnOrder)){
+         if(data === undefined) return;
+         if(_.isEqual(data.tasks,tasks) && _.isEqual(data.columns,columns) && _.isEqual(data.columnOrder,columnOrder) && isEqual(data.membersList,membersList) && isEqual(data.waitingList,waitList)){
            console.log('got equal on listeners');
            return;
          }
@@ -55,7 +63,9 @@ function ProjectPage({ projectId, setProjectId }) {
          setColumns(data.columns);
          setColumnOrder(data.columnOrder);
          setTitle(data.projectName);
-
+         setMembersList(data.membersList)
+         setWaitList(data.waitingList);
+         setAdminId(data.adminId);
       });
       setLoading(false);
     return () => unsub();
@@ -188,6 +198,33 @@ function ProjectPage({ projectId, setProjectId }) {
 
   }
 
+  const hadleAddMember = async(newProject,member) => {
+
+    try {
+
+      await updateDoc(doc(db,'projects',newProject.id),{
+        membersList:arrayUnion(member)
+      })
+
+      await setDoc(doc(db,'users',member.id,'projects',newProject.id),{
+        projectName:newProject.title,
+        projectId:newProject.id,
+      })
+    } catch (error) {
+      toast.error('Something went wrong');
+    }
+  }
+
+  const handleRejectRequest =async(projectId,member) => {
+    try {
+      await updateDoc(doc(db,'projects',projectId),{
+        waitingList:arrayRemove(member)
+      })
+    } catch (error) {
+      toast.error('Something went wrong');
+    }
+  }
+
   const menuitems = [
     {type:"task", name:"Edit",id:"1"},
     {type:"task",name:"Delete",id:"2"},
@@ -197,6 +234,8 @@ function ProjectPage({ projectId, setProjectId }) {
     {type:"column",name:"Edit",id:"1"},
     {type:"column",name:"Delete",id:"2"}
   ]
+
+  
 
   return (
     <div className="w-full h-full bg-[#f0f1f5]">
@@ -213,7 +252,7 @@ function ProjectPage({ projectId, setProjectId }) {
             </button>
           </div>
           <div>
-            <button className="p-2 ml-5 flex">
+            <button className="p-2 ml-5 flex" onClick={() => setShowTeam(true)} >
               <UserIcon />
               <span className="ml-1">Team</span>
             </button>
@@ -227,6 +266,9 @@ function ProjectPage({ projectId, setProjectId }) {
         <div className="h-[calc(100vh_-_118px)] overflow-hidden">
           <ProjectContainer projectId={projectId} columnItemList={columnMenuItems} ItemList={menuitems} handleMenuClick={handleMenuClick} handleSetAddType={handleSetAddType} columnOrder={columnOrder} setColumnOrder={setColumnOrder} columns={columns} setColumns={setColumns} tasks={tasks} setTasks={setTasks} handleAddTask={handleAddTask} handleDeleteTask={handleDeleteTask} handleAddColumn={handleAddColumn} />
           {showModal && <AddTask type={addType} handleAddColumn={handleAddColumn} handleAddTask={handleAddTask} show={showModal} setModal={setShowModal} labelList={labelList} priorityList={priorityList} />}
+        </div>
+        <div className="h-screen">
+        {showTeam && <ManageTeam adminId={adminId} handleRejectRequest={handleRejectRequest} setShowTeam={setShowTeam} membersList={membersList} waitingList={waitList} projectId={projectId} projectTitle={title} hadleAddMember={hadleAddMember}  />}
         </div>
       </div>}
     </div>
