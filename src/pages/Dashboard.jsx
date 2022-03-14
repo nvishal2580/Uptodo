@@ -27,6 +27,7 @@ function Dashboard() {
   useEffect(() => {
     let newProjectId = params["*"].split("/");
     newProjectId = newProjectId[newProjectId.length - 1];
+    // const {id:newProjectId} = params;
     if (projectId !== newProjectId) {
       setProjectId(newProjectId);
       console.log("projectId set");

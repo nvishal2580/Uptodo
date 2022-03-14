@@ -9,7 +9,7 @@ function ManageTeam({
   setShowTeam,
   membersList,
   waitingList,
-  adminId,
+  admin,
   projectId,
   projectTitle,
   hadleAddMember,
@@ -54,7 +54,7 @@ function ManageTeam({
                   className="flex group h-8 bg-gray-100 mb-2 pl-5 rounded-md items-center"
                 >
                   <div className="grow">{member.name}</div>
-                  {auth.currentUser.uid === adminId && (
+                  {auth.currentUser.uid === admin.id && (
                     <div>
                       <button className=" py-1 rounded-full hover:bg-red-100  px-2 hidden group-hover:block ">
                         <CloseIcon className="text-red-500" strokeWidth={2} />
@@ -64,7 +64,7 @@ function ManageTeam({
                 </div>
               ))}
             </div>
-            {auth.currentUser.uid === adminId &&
+            {auth.currentUser.uid === admin.id &&
               waitingList &&
               waitingList.length > 0 && (
                 <div className="flex flex-col">
@@ -107,7 +107,7 @@ function ManageTeam({
                 </div>
               )}
             <div>
-              {auth.currentUser.uid === adminId && (
+              {auth.currentUser.uid === admin.id && (
                 <div className="flex items-center pt-4">
                   <div className="grow">
                     <CopyToClipboard

@@ -17,7 +17,8 @@ const Column =({
   handleSetAddType,
   ItemList,
   columnItemList,
-  handleMenuClick
+  handleMenuClick,
+  setShowTask
 }) => {
 
 
@@ -64,6 +65,7 @@ const Column =({
                     columnId={column.id}
                     ItemList={ItemList}
                     handleMenuClick={handleMenuClick}
+                    setShowTask={setShowTask}
                   />
                 ))}
                 {provided.placeholder}

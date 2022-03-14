@@ -11,7 +11,7 @@ import GoogleLogo from '../assets/logos/google_logo.svg';
 import quotes from '../services/quotes';
 import SpinIcon from '../assets/icons/SpinIcon';
 import GlobeIcon from '../assets/icons/GlobeIcon';
-import { doc, setDoc } from 'firebase/firestore';
+import { updateProfile } from 'firebase/auth';
 
 function Register() {
     const navigate = useNavigate();
@@ -53,11 +53,10 @@ function Register() {
                 //     console.log(auth.currentUser);
                 // });
                 try {
-                    
-                   await setDoc(doc(db,'users',auth.currentUser.uid),{
-                        id:auth.currentUser.uid,
-                        isVerified:false,
-                    })
+                    updateProfile(auth.currentUser, {
+                        displayName: username, photoURL: "https://picsum.photos/id/237/200/200"
+                      }) 
+                   
                 } catch (error) {
                     toast.error(error.message)
                 }

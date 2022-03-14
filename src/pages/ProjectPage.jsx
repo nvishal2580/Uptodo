@@ -12,11 +12,14 @@ import UserIcon from "../assets/icons/UsersIcon";
 import DotsHorizontal from "../assets/icons/DotsHorizontal";
 import ManageTeam from "../components/project/ManageTeam";
 import { Route, Routes ,useParams} from "react-router-dom";
+import TaskModal from "../components/project/TaskModal";
 
 
 function ProjectPage({ projectId, setProjectId }) {
 
   const [showModal,setShowModal] = useState(false);
+  const [showTask,setShowTask] = useState(null);
+
   const [labelList,setLabelList] = useState([
     {id:'l1',name:"developmnt"},
     {id:"l2",name:"production"},
@@ -36,16 +39,16 @@ function ProjectPage({ projectId, setProjectId }) {
   const params = useParams()
   console.log(params);
   
-  const [tasks, setTasks] = useState(data.tasks);
-  const [columns, setColumns] = useState(data.colums);
-  const [columnOrder, setColumnOrder] = useState(data.columnOrder);
+  const [tasks, setTasks] = useState([]);
+  const [columns, setColumns] = useState([]);
+  const [columnOrder, setColumnOrder] = useState([]);
   const [loading, setLoading] = useState(true);
   const [addType,setAddType] = useState(null); // used to store in which column we have to add task
   const [title,setTitle] = useState("");
   const [membersList,setMembersList] = useState([]);
   const [waitList,setWaitList] = useState([]);
   const [showTeam,setShowTeam] = useState(false);
-  const [adminId,setAdminId] = useState(null);
+  const [admin,setAdmin] = useState(null);
 
   useEffect(()=>{
       setLoading(true);
@@ -54,7 +57,7 @@ function ProjectPage({ projectId, setProjectId }) {
       const unsub = onSnapshot(doc(db,'projects',projectId),(snapshot) => {
          const data = snapshot.data();
          if(data === undefined) return;
-         if(_.isEqual(data.tasks,tasks) && _.isEqual(data.columns,columns) && _.isEqual(data.columnOrder,columnOrder) && isEqual(data.membersList,membersList) && isEqual(data.waitingList,waitList)){
+         if(_.isEqual(data.tasks,tasks) && _.isEqual(data.columns,columns) && _.isEqual(data.columnOrder,columnOrder) && _.isEqual(data.membersList,membersList) && isEqual(data.waitingList,waitList) && isEqual(data.labelList,labelList)){
            console.log('got equal on listeners');
            return;
          }
@@ -65,7 +68,8 @@ function ProjectPage({ projectId, setProjectId }) {
          setTitle(data.projectName);
          setMembersList(data.membersList)
          setWaitList(data.waitingList);
-         setAdminId(data.adminId);
+         setAdmin(data.admin);
+         setLabelList(data.labelList);
       });
       setLoading(false);
     return () => unsub();
@@ -235,6 +239,17 @@ function ProjectPage({ projectId, setProjectId }) {
     {type:"column",name:"Delete",id:"2"}
   ]
 
+  const handleAddLabel = async(labelName) => {
+    const temp = {
+      id : uuidv4(),
+      name:labelName
+    }
+    await updateDoc(doc(db,'projects',projectId),{
+      labelList: arrayUnion(temp)
+    })
+
+  }
+
   
 
   return (
@@ -264,11 +279,14 @@ function ProjectPage({ projectId, setProjectId }) {
           </div>
         </div>
         <div className="h-[calc(100vh_-_118px)] overflow-hidden">
-          <ProjectContainer projectId={projectId} columnItemList={columnMenuItems} ItemList={menuitems} handleMenuClick={handleMenuClick} handleSetAddType={handleSetAddType} columnOrder={columnOrder} setColumnOrder={setColumnOrder} columns={columns} setColumns={setColumns} tasks={tasks} setTasks={setTasks} handleAddTask={handleAddTask} handleDeleteTask={handleDeleteTask} handleAddColumn={handleAddColumn} />
-          {showModal && <AddTask type={addType} handleAddColumn={handleAddColumn} handleAddTask={handleAddTask} show={showModal} setModal={setShowModal} labelList={labelList} priorityList={priorityList} />}
+          <ProjectContainer projectId={projectId} setShowTask={setShowTask} columnItemList={columnMenuItems} ItemList={menuitems} handleMenuClick={handleMenuClick} handleSetAddType={handleSetAddType} columnOrder={columnOrder} setColumnOrder={setColumnOrder} columns={columns} setColumns={setColumns} tasks={tasks} setTasks={setTasks} handleAddTask={handleAddTask} handleDeleteTask={handleDeleteTask} handleAddColumn={handleAddColumn} />
+          {showModal && <AddTask type={addType} handleAddLabel={handleAddLabel} handleAddColumn={handleAddColumn} handleAddTask={handleAddTask} show={showModal} setModal={setShowModal} labelList={labelList} priorityList={priorityList} />}
         </div>
         <div className="h-screen">
-        {showTeam && <ManageTeam adminId={adminId} handleRejectRequest={handleRejectRequest} setShowTeam={setShowTeam} membersList={membersList} waitingList={waitList} projectId={projectId} projectTitle={title} hadleAddMember={hadleAddMember}  />}
+        {showTeam && <ManageTeam admin={admin} handleRejectRequest={handleRejectRequest} setShowTeam={setShowTeam} membersList={membersList} waitingList={waitList} projectId={projectId} projectTitle={title} hadleAddMember={hadleAddMember}  />}
+        </div>
+        <div className="h-screen">
+        {showTask !== null && <TaskModal task={showTask} setShowTask={setShowTask} />}
         </div>
       </div>}
     </div>

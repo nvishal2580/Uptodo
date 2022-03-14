@@ -67,7 +67,10 @@ function AddProject({ showModal, setShowModal, handleAddProject }) {
       title: title,
       description: details,
       id: uuidv4().toString(),
-      adminId:auth.currentUser.uid,
+      admin:{
+        id:auth.currentUser.uid,
+        name:auth.currentUser.displayName
+      },
       waitingList:[],
       membersList : []
     });
@@ -110,7 +113,6 @@ function AddProject({ showModal, setShowModal, handleAddProject }) {
                 name="flexRadioDefault"
                 id="flexRadioDefault1"
                 value={isJoin}
-                setV
                 onClick={() => setIsJoin(!isJoin)}
                 checked={isJoin}
               />

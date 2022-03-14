@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import ListItems from './ListItems';
 
-const FilterList = ({data,labels,setLabels,selectMultiple}) => {
+const FilterList = React.memo(({data,labels,setLabels,selectMultiple,handleAddLabel}) => {
   const [contactList, setContactList] = useState(data)
   const [filterQuery, setFilterQuery] = useState("")
 
@@ -35,20 +35,23 @@ const FilterList = ({data,labels,setLabels,selectMultiple}) => {
             placeholder={"search.."}
             onChange={event => setFilterQuery(event.target.value)}
             className={" outline-none p-1 w-full border-b-[1px] border-slate-400"}
+            maxLength={12}
           />
       </section>
       <section className={""}>
-        {<ListItems data={labels} setData={setLabels} list={contactList} selectMultiple />}
+        {<ListItems data={labels} setData={setLabels} list={contactList} selectMultiple={selectMultiple} />}
         {contactList && filterQuery.length > 1 && (contactList.length !== 1 || contactList[0].name !== filterQuery) && (
-          <div>
+          <div className='flex hover:bg-gray-200'>
+            <button onClick={() => handleAddLabel(filterQuery)} className='ml-2  max-w-[200px] overflow-hidden'>
               Add
               <span className='font-bold'> "{filterQuery}"</span>
               label
+          </button>
           </div>
         )}
       </section>
     </div>
   )
-}
+})
 
 export default FilterList

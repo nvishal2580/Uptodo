@@ -8,9 +8,8 @@ import DropdownMenu from "../common/DropdownMenu";
 
 
 
-function TaskContainer({ task, handleDeleteTask, columnId,ItemList,handleMenuClick}) {
+const TaskContainer = React.memo( ({ task, handleDeleteTask, columnId,ItemList,handleMenuClick,setShowTask}) => {
 
-  const [taskLabel,setTaskLabel] = useState({});
 
   const priority = {
     "1" : {id:"1", name:"Priority 1" , color:"bg-blue-100 text-blue-800",},
@@ -35,14 +34,16 @@ function TaskContainer({ task, handleDeleteTask, columnId,ItemList,handleMenuCli
     {id:"4" , name:"Priority 4"}
   ]
 
+  console.log('task i got ',task)
+
 
 
   return (
-    <div className="flex group flex-col">
+    <div  className="flex group flex-col" onClick={() => setShowTask(task)}>
 
-      <div className="flex  ">
+      <div className="flex "  >
         <div className="grow mb-2" >
-          <span className={`p-1 text-sm font-medium bg-red-300 text-red-900 rounded`} >bug</span>
+          <span className={`p-1 text-sm font-medium rounded ${priority[task.priority].color} `} >{task.labels.length > 0 ? task.labels[0].name : ""}</span>
         </div>
         <div className="hidden group-hover:block">
           <button>
@@ -52,6 +53,7 @@ function TaskContainer({ task, handleDeleteTask, columnId,ItemList,handleMenuCli
           </button>
         </div>
       </div>
+      <div className="cursor-pointer" >
       <div className="mt-1">
         <span className="font-semibold text-base ">{_.startCase(_.toLower(task.title))}</span>
       </div>
@@ -73,8 +75,10 @@ function TaskContainer({ task, handleDeleteTask, columnId,ItemList,handleMenuCli
             <span className="text-sm ml-1">Nov 30</span>
         </div>
       </div>
+      </div>
+      
     </div>
   );
-}
+})
 
 export default TaskContainer;

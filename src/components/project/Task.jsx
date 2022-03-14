@@ -1,10 +1,12 @@
-import React from "react";
+import React,{useState} from "react";
 import { Draggable } from "react-beautiful-dnd";
 import TaskContainer from "./TaskContainer";
+import TaskModal from "./TaskModal";
 
 
-const Task =React.memo( ({ task, index, handleDeleteTask, columnId,ItemList,handleMenuClick }) => {
+const Task =React.memo( ({ task, index, handleDeleteTask, columnId,ItemList,handleMenuClick ,setShowTask}) => {
   console.log("task.js rerendered");
+
   return (
     <Draggable draggableId={task.id} key={task.id} index={index}>
       {(provided, snapshot) => (
@@ -13,7 +15,7 @@ const Task =React.memo( ({ task, index, handleDeleteTask, columnId,ItemList,hand
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          isDragging={snapshot.isDragging}
+          // isDragging={snapshot.isDragging}
         >
           <TaskContainer
             task={task}
@@ -21,6 +23,7 @@ const Task =React.memo( ({ task, index, handleDeleteTask, columnId,ItemList,hand
             columnId={columnId}
             handleMenuClick={handleMenuClick}
             ItemList={ItemList}
+            setShowTask={setShowTask}
           />
         </div>
       )}

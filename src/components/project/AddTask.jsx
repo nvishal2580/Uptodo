@@ -8,12 +8,12 @@ import ListItems from "../common/ListItems";
 import DatePicker from "react-datepicker";
 import { v4 as uuidv4 } from 'uuid';
 
-function AddTask({type:typedata, handleAddTask, show, setModal, labelList,priorityList,handleAddColumn }) {
+function AddTask({type:typedata, handleAddTask, show, setModal, labelList,priorityList,handleAddColumn,handleAddLabel }) {
   const [title, setTitle] = useState("");
   const [details, setDetails] = useState("");
-  const [labels, setLabels] = useState({count:0,list : []});
+  const [labels, setLabels] = useState([]);
   const [showLabel, setShowLabel] = useState("");
-  const [priority,setPriority] = useState({count:0,list : []});
+  const [priority,setPriority] = useState(null);
   const [deadline,setDeadline] = useState(new Date());
 
   const clearData = () => {
@@ -21,8 +21,8 @@ function AddTask({type:typedata, handleAddTask, show, setModal, labelList,priori
     setTitle("");
     setDeadline(null);
     setDetails("");
-    setLabels({count:0,list:[]})
-    setPriority({count:0,list:[]})
+    setLabels([])
+    setPriority(null)
     setModal(false);
   }
 
@@ -137,13 +137,22 @@ function AddTask({type:typedata, handleAddTask, show, setModal, labelList,priori
                         <span className={` ${showLabel !== "" ? "hidden" : "tooltip"}  m-1 mt-10 `}>set deadline</span>
                       </div>
                       </button>
-                      <div className={`${showLabel === "label" ? "" : "hidden"} max-w-[200px]  border-[1px] cursor-pointer transition-all border-slate-400 rounded overflow-y-auto max-h-32`}>
-                        <FilterList labels={labels} setLabels={setLabels} data={labelList} selectMultiple={true}/>
+                      <div 
+                       className={`transition-all duration-300 max-w-[200px]  overflow-hidden overflow-x-hidden rounded-md hover:overflow-y-auto ${showLabel === "label" ? 'h-32 ease-in border-[1px] border-gray-300' : 'h-0 ease-out'}`}
+                      >
+                       {/* className={`${showLabel === "label" ? "" : "hidden"} max-w-[200px]  border-[1px] cursor-pointer transition-all border-slate-400 rounded overflow-y-auto max-h-32`}> */}
+                        <FilterList labels={labels} setLabels={setLabels} data={labelList} selectMultiple={true} handleAddLabel={handleAddLabel} />
                       </div>
-                      <div className={`${showLabel === "priority" ? "" : "hidden"} ml-20 max-w-[200px]  border-[1px] cursor-pointer transition-all border-slate-400 rounded overflow-y-auto max-h-32`}>
+                      <div 
+                      className={`transition-all duration-300 max-w-[200px]  overflow-hidden overflow-x-hidden rounded-md hover:overflow-y-auto ${showLabel === "priority" ? 'h-32 ease-in border-[1px] border-gray-300' : 'h-0 ease-out'}`}
+                      >
+                      {/* className={`${showLabel === "priority" ? "" : "hidden"} ml-20 max-w-[200px]  border-[1px] cursor-pointer transition-all border-slate-400 rounded overflow-y-auto max-h-32`}> */}
                         <ListItems data={priority} setData={setPriority} list={priorityList} selectMultiple={false}/>
                       </div>
-                      <div className={`${showLabel === "deadline" ? "" : "hidden"} ml-32 rounded border-[2px] border-slate-400  inline-block `}>
+                      <div 
+                      className={`transition-all duration-300 max-w-[200px]  overflow-hidden overflow-x-hidden rounded-md hover:overflow-y-hidden ${showLabel === "deadline" ? 'h-10 ease-in border-[1px] border-gray-300' : 'h-0 ease-out'}`}
+                      >
+                      {/* className={`${showLabel === "deadline" ? "" : "hidden"} ml-32 rounded border-[2px] border-slate-400  inline-block `}> */}
                         <DatePicker className="p-2" selected={deadline} onChange={(date) => setDeadline(date)} />
                       </div>
                     </div>

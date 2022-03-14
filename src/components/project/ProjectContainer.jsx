@@ -11,7 +11,7 @@ function areEqueal(prevProps,nextPros){
   return prevProps.tasks && prevProps.columns && prevProps.columnOrder && prevProps.tasks === nextPros.tasks && prevProps.columns === nextPros.columns && prevProps.columnOrder === nextPros.columnOrder;
 }
 
-const ProjectContainer =React.memo(({columnItemList,ItemList,projectId,handleMenuClick,handleSetAddType,columnOrder,setColumnOrder,columns,setColumns,tasks,setTasks,handleAddTask,handleDeleteTask,handleDeleteColumn}) => {
+const ProjectContainer =React.memo(({setShowTask,columnItemList,ItemList,projectId,handleMenuClick,handleSetAddType,columnOrder,setColumnOrder,columns,setColumns,tasks,setTasks,handleAddTask,handleDeleteTask,handleDeleteColumn}) => {
 
   const onDragEnd = async(result) => {
     console.log('on drag end',result);
@@ -141,6 +141,7 @@ const ProjectContainer =React.memo(({columnItemList,ItemList,projectId,handleMen
                   ItemList={ItemList}
                   handleMenuClick={handleMenuClick}
                   columnItemList={columnItemList}
+                  setShowTask={setShowTask}
                 />
               );
             })}

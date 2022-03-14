@@ -52,7 +52,7 @@ function SideNav({projectId,setShowModal,openMenu,setOpenMenu,projectList,handle
           </div>
           <div className="mt-2 pt-6">
             <div className=" pl-3">
-              <div className="flex w-full py-2 border-2">
+              <div className="flex w-full py-2 ">
                 <button className="grow" onClick={() => setOpenMenu(!openMenu)}>
                   <div className="inline-block mr-4 float-left">
                     <ChevronRight
@@ -67,7 +67,7 @@ function SideNav({projectId,setShowModal,openMenu,setOpenMenu,projectList,handle
                   <div className="grow text-left text-lg ">Project</div>
                 </button>
                 <div>
-                <span class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-gray-800 bg-gray-200 rounded-full">{projectList.length > 0 ? projectList.length : ""}</span>
+                <span className={`inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-gray-800 bg-gray-200 rounded-full ${projectList.length > 0 ? "" :"hidden"}`}>{ projectList.length}</span>
                 </div>
               </div>
 
