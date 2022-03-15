@@ -13,7 +13,7 @@ function AddTask({type:typedata, handleAddTask, show, setModal, labelList,priori
   const [details, setDetails] = useState("");
   const [labels, setLabels] = useState([]);
   const [showLabel, setShowLabel] = useState("");
-  const [priority,setPriority] = useState(null);
+  const [priority,setPriority] = useState("1");
   const [deadline,setDeadline] = useState(new Date());
 
   const clearData = () => {

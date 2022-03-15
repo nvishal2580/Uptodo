@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import ListItems from './ListItems';
 
-const FilterList = React.memo(({data,labels,setLabels,selectMultiple,handleAddLabel}) => {
+const FilterList = React.memo(({data,labels,setLabels,selectMultiple,handleAddLabel,extraAdd = true}) => {
   const [contactList, setContactList] = useState(data)
   const [filterQuery, setFilterQuery] = useState("")
 
@@ -40,7 +40,7 @@ const FilterList = React.memo(({data,labels,setLabels,selectMultiple,handleAddLa
       </section>
       <section className={""}>
         {<ListItems data={labels} setData={setLabels} list={contactList} selectMultiple={selectMultiple} />}
-        {contactList && filterQuery.length > 1 && (contactList.length !== 1 || contactList[0].name !== filterQuery) && (
+        {extraAdd && contactList && filterQuery.length > 1 && (contactList.length !== 1 || contactList[0].name !== filterQuery) && (
           <div className='flex hover:bg-gray-200'>
             <button onClick={() => handleAddLabel(filterQuery)} className='ml-2  max-w-[200px] overflow-hidden'>
               Add

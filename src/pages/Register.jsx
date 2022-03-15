@@ -53,13 +53,15 @@ function Register() {
                 //     console.log(auth.currentUser);
                 // });
                 try {
-                    updateProfile(auth.currentUser, {
-                        displayName: username, photoURL: "https://picsum.photos/id/237/200/200"
+                   await updateProfile(auth.currentUser, {
+                        displayName : username
                       }) 
                    
                 } catch (error) {
                     toast.error(error.message)
                 }
+
+                console.log(auth.currentUser.displayName);
 
                 toast('verification email sent !');
                 // auth.signOut();

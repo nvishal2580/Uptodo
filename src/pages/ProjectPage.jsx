@@ -4,7 +4,7 @@ import ProjectContainer from "../components/project/ProjectContainer";
 import {v4 as uuidv4} from 'uuid';
 import data from "../components/project/InitialData";
 import {collection, onSnapshot,doc,runTransaction, Firestore, setDoc,updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore'
-import { db } from "../services/firebase/firebase";
+import { auth, db } from "../services/firebase/firebase";
 import _, { isEqual } from 'lodash';
 import { toast } from "react-toastify";
 import ChatAltIcon from "../assets/icons/ChatAltIcon";
@@ -77,10 +77,12 @@ function ProjectPage({ projectId, setProjectId }) {
 
   const handleAddTask = async (columnId, taskItem) => {
     console.log(columnId, taskItem);
-    
+
+    const key = uuidv4();
+    const taskItemCopy = {...taskItem,key:key}
     const newTaskList = {
       ...tasks,
-      [taskItem.id]: taskItem,
+      [taskItem.id]: taskItemCopy,
     };
 
     let col = columns[columnId];
@@ -91,10 +93,11 @@ function ProjectPage({ projectId, setProjectId }) {
     let newColumns = { ...columns };
     newColumns = { ...newColumns, [columnId]: col };
 
-    // setTasks(newTaskList);
-    // setColumns(newColumns);
     const projectRef = doc(db,'projects',projectId);
     try {
+
+      await setDoc(doc(db,'tasks',key),{comments:[],subtasks:[],labels:[],members:[],createdBy:{name:auth.currentUser.displayName,id:auth.currentUser.uid}});
+
       await updateDoc(projectRef,{columns:newColumns,tasks:newTaskList});
     } catch (error) {
       console.log(error);
@@ -205,17 +208,22 @@ function ProjectPage({ projectId, setProjectId }) {
   const hadleAddMember = async(newProject,member) => {
 
     try {
-
+      
+      await updateDoc(doc(db,'projects',newProject.id),{
+        waitingList:arrayRemove(member)
+      })
+      
       await updateDoc(doc(db,'projects',newProject.id),{
         membersList:arrayUnion(member)
       })
+
 
       await setDoc(doc(db,'users',member.id,'projects',newProject.id),{
         projectName:newProject.title,
         projectId:newProject.id,
       })
     } catch (error) {
-      toast.error('Something went wrong');
+      toast.error('Something went wrong',error);
     }
   }
 
@@ -286,7 +294,7 @@ function ProjectPage({ projectId, setProjectId }) {
         {showTeam && <ManageTeam admin={admin} handleRejectRequest={handleRejectRequest} setShowTeam={setShowTeam} membersList={membersList} waitingList={waitList} projectId={projectId} projectTitle={title} hadleAddMember={hadleAddMember}  />}
         </div>
         <div className="h-screen">
-        {showTask !== null && <TaskModal task={showTask} setShowTask={setShowTask} />}
+        {showTask !== null && <TaskModal projectId={projectId} labelList={labelList}  task={showTask} setShowTask={setShowTask} handleAddLabel={handleAddLabel} />}
         </div>
       </div>}
     </div>

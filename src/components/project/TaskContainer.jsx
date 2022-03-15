@@ -43,7 +43,7 @@ const TaskContainer = React.memo( ({ task, handleDeleteTask, columnId,ItemList,h
 
       <div className="flex "  >
         <div className="grow mb-2" >
-          <span className={`p-1 text-sm font-medium rounded ${priority[task.priority].color} `} >{task.labels.length > 0 ? task.labels[0].name : ""}</span>
+          <span className={`p-1 text-sm font-medium rounded ${priority[task.priority]?.color} `} >{task.labels.length > 0 ? task.labels[0].name : ""}</span>
         </div>
         <div className="hidden group-hover:block">
           <button>
