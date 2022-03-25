@@ -6,44 +6,30 @@ import ChatIcon from "../../assets/icons/ChatIcon";
 import CalenderIcon from "../../assets/icons/CalenderIcon";
 import DropdownMenu from "../common/DropdownMenu";
 
-
+var options = {  month: 'long', day: 'numeric' };
 
 const TaskContainer = React.memo( ({ task, handleDeleteTask, columnId,ItemList,handleMenuClick,setShowTask}) => {
 
 
   const priority = {
-    "1" : {id:"1", name:"Priority 1" , color:"bg-blue-100 text-blue-800",},
-    "2":{id:"2" , name:"Priority 2" ,color:"bg-cyan-100 text-cyan-800"},
-    "3":{id:"3" , name:"Priority 3",color:"bg-purple-100 text-purple-800"},
-    "4":{id:"4" , name:"Priority 4", color:"bg-green-100 text-green-800"}
+    "1" : {id:"1", name:"Priority 1" , color:"bg-blue-600",},
+    "2":{id:"2" , name:"Priority 2" ,color:"bg-cyan-600"},
+    "3":{id:"3" , name:"Priority 3",color:"bg-purple-600"},
+    "4":{id:"4" , name:"Priority 4", color:"bg-green-600"}
   }
 
-  const labelList = [
-    {id:'l1',name:"developmnt"},
-    {id:"l2",name:"production"},
-    {id:'l3',name:"game"},
-    {id:"l4",name:"bug"},
-    {id:'l5',name:"improvment"},
-    {id:"l6",name:"testing"},
-  ];
-
-  const priorityList = [
-    {id:"1", name:"Priority 1"},
-    {id:"2" , name:"Priority 2"},
-    {id:"3" , name:"Priority 3"},
-    {id:"4" , name:"Priority 4"}
-  ]
-
+  
   console.log('task i got ',task)
 
 
 
   return (
-    <div  className="flex group flex-col" onClick={() => setShowTask(task)}>
+    <div  className="flex group flex-col" >
 
       <div className="flex "  >
-        <div className="grow mb-2" >
-          <span className={`p-1 text-sm font-medium rounded ${priority[task.priority]?.color} `} >{task.labels.length > 0 ? task.labels[0].name : ""}</span>
+        <div className="grow  mb-2" >
+        <span className={`w-4 h-4 rounded-full ${priority[task.priority].color} inline-block`} >{""}</span>
+        <span className="font-semibold text-base ml-3 ">{_.startCase(_.toLower(task.title))}</span>
         </div>
         <div className="hidden group-hover:block">
           <button>
@@ -53,26 +39,23 @@ const TaskContainer = React.memo( ({ task, handleDeleteTask, columnId,ItemList,h
           </button>
         </div>
       </div>
-      <div className="cursor-pointer" >
-      <div className="mt-1">
-        <span className="font-semibold text-base ">{_.startCase(_.toLower(task.title))}</span>
-      </div>
-      <div className="max-h-20  overflow-hidden overflow-ellipsis">
-        <span className="text-sm leading-3 text-[#787B85] ">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</span>
+      <div className="cursor-pointer" onClick={() => setShowTask(task)} >
+      
+      <div className="max-h-20 pb-2 overflow-hidden overflow-ellipsis">
+        <span className="text-sm leading-3 text-[#787B85] ">{task.description}</span>
       </div>
       <div className="flex border-t-[1px] items-center border-t-stone-300 pt-1" >
-        <div className="flex px-2 items-center">
-           <span>{<ChatIcon />}</span>
-           <span className="ml-1">{6}</span>
-        </div>
-        <div className="flex px-2 items-center">
-           <span>{<LinkIcon className="w-5 h-5" />}</span>
-           <span className="ml-1">{2}</span>
-        </div>
-        <div className="grow">{""}</div>
-        <div className="flex">
+      <div className={`${task.deadline === null ? "hidden" : "flex"}`}>
             <span>{<CalenderIcon className="w-5 h-5" />}</span>
-            <span className="text-sm ml-1">Nov 30</span>
+            <span className="text-sm ml-1">{task.deadline?.toDate().toLocaleDateString("en-US", options)}</span>
+        </div>
+        
+        <div className="grow">{""}</div>
+        <div className={` ${ task.deadline!== null && task.isCompleted ===false && new Date() > new Date(task.deadline.toDate()) ? "flex pr-2 pt-2 items-center" : "hidden"}`}>
+           <span className="bg-red-100 text-red-700 px-1 rounded text-sm font-semibold">{"Due"}</span>
+        </div>
+        <div className={` ${ task.isCompleted ? "flex pr-2 pt-2 items-center" : "hidden"}`}>
+           <span className="bg-green-100 text-green-700 px-1 rounded text-sm font-semibold">{"Completed"}</span>
         </div>
       </div>
       </div>

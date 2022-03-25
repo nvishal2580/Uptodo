@@ -19,7 +19,7 @@ const colors = [
 var options = { year: 'numeric', month: 'long', day: 'numeric' };
 
 
-function TaskModal({setShowTask,task,handleAddLabel,labelList,projectId}) {
+function TaskModal({setShowTask,task,handleAddLabel,labelList,projectId,membersList}) {
   console.log('task modal ',task)
 
   const [subtasks,setSubtasks] = useState([]);
@@ -142,7 +142,7 @@ function TaskModal({setShowTask,task,handleAddLabel,labelList,projectId}) {
           &#8203;
         </span>
 
-        <div className=" relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle  md:h-[650px] w-[700px] ">
+        <div className=" relative inline-block align-bottom bg-white rounded-lg text-left  shadow-xl transform transition-all sm:my-8 sm:align-middle  md:h-[650px] w-[700px] ">
           <div className="flex flex-col bg-white px-14 pt-2 pb-2">
             <div className="flex mb-2">
               <div className="grow">{""}</div>
@@ -173,7 +173,7 @@ function TaskModal({setShowTask,task,handleAddLabel,labelList,projectId}) {
                          {label.name}
                        </span>)}
                     <div>
-                         <DropdownButton data={members} dataList={labelList} setData={handleSetMembers}  extraAdd={false} />
+                         <DropdownButton data={members} dataList={membersList} setData={handleSetMembers}  extraAdd={false} />
                        </div>
                     </div>
                   </div>
@@ -193,12 +193,12 @@ function TaskModal({setShowTask,task,handleAddLabel,labelList,projectId}) {
                   </div>
               </div>
               <hr />
-              <div className="py-2">
+              <div className="py-2 max-h-16 overflow-y-hidden hover:overflow-y-auto">
                 <span className="text-gray-500">{_.upperFirst(task.description)}</span>
               </div>
               <hr />
               <div>
-                {comments && subtasks && <ActivityTabs handleAddComment={handleAddComment} comments={comments} subtasks={subtasks} handleAddSub={handleAddSubtask}  handleSubtaskToggle={handleSubtaskToggle} /> }
+                {comments && subtasks && <ActivityTabs membersList={membersList} handleAddComment={handleAddComment} comments={comments} subtasks={subtasks} handleAddSub={handleAddSubtask}  handleSubtaskToggle={handleSubtaskToggle} /> }
               </div>
           </div>
         </div>

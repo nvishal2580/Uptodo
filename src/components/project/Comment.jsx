@@ -1,22 +1,8 @@
 import React, { Component, useState } from 'react';
 import { MentionsInput, Mention } from 'react-mentions'
+import defaultStyle from './DefaultStyle'
 
-function Comment({handleSubmit}) {
-
-    const [users,setUsers] = useState([
-        {
-          _id: '123',
-          name: { first: 'John', last: 'Reynolds' }
-        },
-        {
-          _id: '234',
-          name: { first: 'Holly', last: 'Reynolds' }
-        },
-        {
-          _id: '345',
-          name: { first: 'Ryan', last: 'Williams' }
-        }
-      ]);
+function Comment({handleSubmit,membersList}) {
 
     const [value,setValue] = useState("");
     const [planeText,setPlainText] = useState("");
@@ -37,34 +23,36 @@ function Comment({handleSubmit}) {
 
 
     const userMentionData = () => {
-        return (users.map(myUser => ({
-            id: myUser._id,
-            display: `${myUser.name.first} ${myUser.name.last}`
+        return (membersList.map(myUser => ({
+            id: myUser.id,
+            display: myUser.name
           })));
     }
 
   return (
-    <div className='flex w-full items-center'>
+    <div className='flex items-center'>
         
-        <div className='w-5/6 border-2'>
+        <div className='w-[450px] '>
         <MentionsInput
+          singleLine
           value={value}
           onChange={handleChange}
           markup="@{{__type__||__id__||__display__}}"
           placeholder="Type anything, use the @ symbol to tag other users."
-          className="mentions w-full rounded-lg px-2 py-2"
+          className=" w-[450px] "
+          style={defaultStyle}
           
         >
           <Mention
             type="user"
             trigger="@"
             data={userMentionData}
-            className="mentions__mention bg-cyan-200"
+            className="mentions__mention bg-cyan-200 z-50"
           />
         </MentionsInput>
         </div>
         
-        <div className='w-1/6 ml-3'>
+        <div className=' ml-3'>
             <button onClick={handleFormSubmit} className='py-1 px-2 rounded-md bg-orange-400 hover:bg-orange-500 text-white'>
                 Comment
             </button>

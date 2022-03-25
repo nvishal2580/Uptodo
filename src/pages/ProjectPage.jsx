@@ -3,7 +3,7 @@ import AddTask from "../components/project/AddTask";
 import ProjectContainer from "../components/project/ProjectContainer";
 import {v4 as uuidv4} from 'uuid';
 import data from "../components/project/InitialData";
-import {collection, onSnapshot,doc,runTransaction, Firestore, setDoc,updateDoc, arrayUnion, arrayRemove} from 'firebase/firestore'
+import {collection, onSnapshot,doc,runTransaction, Firestore, setDoc,updateDoc, arrayUnion, arrayRemove, deleteDoc, FieldValue, deleteField} from 'firebase/firestore'
 import { auth, db } from "../services/firebase/firebase";
 import _, { isEqual } from 'lodash';
 import { toast } from "react-toastify";
@@ -106,9 +106,16 @@ function ProjectPage({ projectId, setProjectId }) {
     setShowModal(false);
   };
 
-  const handleDeleteColumn = (columnId) => {
+  const handleDeleteColumn = async(columnId) => {
+
     const col = columns[columnId];
     const taskIds = col.taskIds;
+
+    if(taskIds.length > 0){
+      toast.info('Remove all column tasks first');
+      return;
+    }
+
     let newTasks = { ...tasks };
     taskIds.forEach((taskId) => {
       delete newTasks[taskId];
@@ -119,9 +126,24 @@ function ProjectPage({ projectId, setProjectId }) {
     setTasks(newTasks);
     setColumns(newColumns);
     setColumnOrder(newColumnOrder);
+
+    
+
+    try {
+
+      await db.collection('projects').doc(projectId).update({
+
+      })
+      
+    } catch (error) {
+      toast.error('something went wrong');
+      console.log(error);
+    }
+
+
   };
 
-  const handleDeleteTask = (taskId, columnId) => {
+  const handleDeleteTask =async (taskId, columnId) => {
     console.log(columnId, taskId);
 
     let newTasks = { ...tasks };
@@ -133,6 +155,21 @@ function ProjectPage({ projectId, setProjectId }) {
     setColumns(newColumn);
     setTasks(newTasks);
     setColumnOrder(newColumnOrder);
+
+    try {
+      if(tasks[taskId].key){
+        console.log('task key found');
+        await deleteDoc(doc(db,'tasks',tasks[taskId].key));
+      }
+      await db.collection('projects').doc(projectId).update({
+        [`columns.${columnId}.taskIds`] : arrayRemove(taskId),
+        [`tasks.${taskId}`] : deleteField()
+      })
+    } catch (error) {
+      toast.error('something went wrong');
+      console.log('this is error ',error);
+    }
+
     console.log(newTasks);
     console.log(newColumn);
   };
@@ -174,7 +211,7 @@ function ProjectPage({ projectId, setProjectId }) {
   }
 
   const handleEditTask = () => {
-
+      toast.info('comming soon');
   }
 
   const handleMenuClick = (item) => {
@@ -194,7 +231,7 @@ function ProjectPage({ projectId, setProjectId }) {
     // now we just have to handle column dropdown menu options
 
     if(item.name === "Edit"){
-
+      toast.info('comming soon');
       return;
     }
     if(item.name === "Delete"){
@@ -269,7 +306,7 @@ function ProjectPage({ projectId, setProjectId }) {
             <span className="text-2xl font-bold overflow-ellipsis">{title}</span>
           </div>
           <div>
-            <button className="p-2 ml-5 flex">
+            <button className="p-2 ml-5 flex" onClick={() => toast.info('comming soon')} >
               <ChatAltIcon />
               <span className="ml-1">Chat</span>
             </button>
@@ -294,7 +331,7 @@ function ProjectPage({ projectId, setProjectId }) {
         {showTeam && <ManageTeam admin={admin} handleRejectRequest={handleRejectRequest} setShowTeam={setShowTeam} membersList={membersList} waitingList={waitList} projectId={projectId} projectTitle={title} hadleAddMember={hadleAddMember}  />}
         </div>
         <div className="h-screen">
-        {showTask !== null && <TaskModal projectId={projectId} labelList={labelList}  task={showTask} setShowTask={setShowTask} handleAddLabel={handleAddLabel} />}
+        {showTask !== null && <TaskModal membersList={membersList} projectId={projectId} labelList={labelList}  task={showTask} setShowTask={setShowTask} handleAddLabel={handleAddLabel} />}
         </div>
       </div>}
     </div>

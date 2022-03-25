@@ -6,7 +6,7 @@ import Linkify from 'linkify-react';
 import {serverTimestamp,} from 'firebase/firestore'
 import { auth } from '../../services/firebase/firebase';
 
-function ActivityTabs({subtasks,handleSubtaskToggle,handleAddSub,handleAddComment,comments}) {
+function ActivityTabs({subtasks,handleSubtaskToggle,handleAddSub,handleAddComment,comments,membersList}) {
 
     const [showType,setShowType] = useState("subtasks");
     const [sub,setSub] = useState("");
@@ -73,9 +73,9 @@ function ActivityTabs({subtasks,handleSubtaskToggle,handleAddSub,handleAddCommen
                         ))}
                     </div>
                     </div>}
-                {showType === "activity" && <div className='px-2 flex flex-col'>
+                {showType === "activity" && <div className='px-2 flex max-h-48 flex-col overflow-y-auto'>
 
-                    <div className='h-64 overflow-y-hidden hover:overflow-y-auto'>
+                    <div className='overflow-y-hidden hover:overflow-y-auto'>
                             {comments?.map(comment => (<div key={comment.id} className="flex items-center mb-4" >
                                 <div>
                                     <div className=' flex items-center justify-center bg-red-500 w-8 h-8 text-white rounded-full'>
@@ -96,8 +96,8 @@ function ActivityTabs({subtasks,handleSubtaskToggle,handleAddSub,handleAddCommen
                             </div>))}
                     </div>
                     <div className="grow">{""}</div>
-                    <div className="">
-                        <Comment handleSubmit={addComment} />
+                    <div className="absolute bottom-2 w-full">
+                        <Comment handleSubmit={addComment} membersList={membersList} />
                     </div>
                 </div>}
             </div>

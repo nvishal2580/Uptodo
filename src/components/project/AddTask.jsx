@@ -7,21 +7,20 @@ import FilterList from '../common/FilterList';
 import ListItems from "../common/ListItems";
 import DatePicker from "react-datepicker";
 import { v4 as uuidv4 } from 'uuid';
+import { serverTimestamp } from "firebase/firestore";
 
 function AddTask({type:typedata, handleAddTask, show, setModal, labelList,priorityList,handleAddColumn,handleAddLabel }) {
   const [title, setTitle] = useState("");
   const [details, setDetails] = useState("");
-  const [labels, setLabels] = useState([]);
   const [showLabel, setShowLabel] = useState("");
   const [priority,setPriority] = useState("1");
-  const [deadline,setDeadline] = useState(new Date());
+  const [deadline,setDeadline] = useState(null);
 
   const clearData = () => {
     console.log('data reset');
     setTitle("");
     setDeadline(null);
     setDetails("");
-    setLabels([])
     setPriority(null)
     setModal(false);
   }
@@ -47,7 +46,8 @@ function AddTask({type:typedata, handleAddTask, show, setModal, labelList,priori
       description:details,
       deadline:deadline,
       priority:priority,
-      labels:labels
+      isCompleted : false,
+      iat: serverTimestamp()
     }
 
     if(typedata.type === "task"){
@@ -120,10 +120,10 @@ function AddTask({type:typedata, handleAddTask, show, setModal, labelList,priori
                   <div>
                     <div className={`${showLabel === "" ? "border-b-slate-300 border-b-[1px]" : ""}`}>
                       <button  onClick={() => setLabelView("label")}>
-                      <div className="has-tooltip flex p-1 ">
+                      {/* <div className="has-tooltip flex p-1 ">
                         <span className="ml-4 hover:bg-slate-200 p-2 rounded-full">{<TagIcon strokeWidth={1.5} />}</span>
                         <span className={` ${showLabel !== "" ? "hidden" : "tooltip"}  m-1 mt-10 `}>Add Label</span>
-                      </div>
+                      </div> */}
                       </button>
                       <button  onClick={() => setLabelView("priority")}>
                       <div className="has-tooltip flex p-1 ">
@@ -141,7 +141,7 @@ function AddTask({type:typedata, handleAddTask, show, setModal, labelList,priori
                        className={`transition-all duration-300 max-w-[200px]  overflow-hidden overflow-x-hidden rounded-md hover:overflow-y-auto ${showLabel === "label" ? 'h-32 ease-in border-[1px] border-gray-300' : 'h-0 ease-out'}`}
                       >
                        {/* className={`${showLabel === "label" ? "" : "hidden"} max-w-[200px]  border-[1px] cursor-pointer transition-all border-slate-400 rounded overflow-y-auto max-h-32`}> */}
-                        <FilterList labels={labels} setLabels={setLabels} data={labelList} selectMultiple={true} handleAddLabel={handleAddLabel} />
+                        {/* <FilterList labels={labels} setLabels={setLabels} data={labelList} selectMultiple={true} handleAddLabel={handleAddLabel} /> */}
                       </div>
                       <div 
                       className={`transition-all duration-300 max-w-[200px]  overflow-hidden overflow-x-hidden rounded-md hover:overflow-y-auto ${showLabel === "priority" ? 'h-32 ease-in border-[1px] border-gray-300' : 'h-0 ease-out'}`}

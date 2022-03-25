@@ -9,13 +9,9 @@ import AddProject from "../components/project/AddProject";
 import SideNav from "../components/sidebar/SideNav";
 import Navbar from "../components/sidebar/Navbar";
 import { toast } from "react-toastify";
-import ManageTeam from "../components/project/ManageTeam";
 
 function Dashboard() {
-  const [projectList, setProjectList] = useState([
-    { projectName: "test1", projectId: "1234" },
-    { projectName: "test2", projectId: "4321" },
-  ]);
+  const [projectList, setProjectList] = useState([]);
   const [openMenu, setOpenMenu] = useState(false);
   const [projectId, setProjectId] = useState("inbox");
   const [showModal, setShowModal] = useState(false);
