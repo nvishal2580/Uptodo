@@ -132,7 +132,8 @@ function ProjectPage({ projectId, setProjectId }) {
     try {
 
       await db.collection('projects').doc(projectId).update({
-
+          columnOrder:newColumnOrder,
+          columns : newColumns,
       })
       
     } catch (error) {
