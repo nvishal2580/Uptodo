@@ -297,7 +297,6 @@ function ProjectPage({ projectId, setProjectId }) {
   }
 
   
-
   return (
     <div className="w-full h-full bg-[#f0f1f5]">
       {loading && <div className="h-full grow flex justify-center items-center" ><div class="animate-spin rounded-full w-20 h-20 border-4 border-b-blue-400 border-solid"></div></div>}
