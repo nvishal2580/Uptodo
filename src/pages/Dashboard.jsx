@@ -80,6 +80,7 @@ function Dashboard() {
         columns:{},
         tasks:{},
         columnOrder:[],
+        admin:newProject.admin,
         iat:serverTimestamp()
       })
 
