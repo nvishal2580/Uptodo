@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Spinner from "../../components/common/Spinner";
 import app from "./firebase";
 
 export const AuthContext = React.createContext();
@@ -15,9 +16,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   if(pending){
-    return <>
-      <div className="h-screen grow flex justify-center items-center" ><div class="animate-spin rounded-full w-20 h-20 border-4 border-b-blue-400 border-solid"></div></div>
-    </>
+    return (<Spinner />)
   }
 
   return (

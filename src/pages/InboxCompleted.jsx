@@ -64,7 +64,7 @@ export default function InboxCompleted({showModal ,setShowModal,tasks,handleDele
                         Cancel
                       </button>
                     </div>
-                    <div>
+                    <div className="max-h-96 overflow-auto">
                     {tasks.map(
             (task) =>
               task?.isCompleted === true && (

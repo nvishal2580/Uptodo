@@ -10,11 +10,12 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <AuthProvider>
     <App />
     </AuthProvider>
-  </React.StrictMode>,
+  // </React.StrictMode>,,
+  ,
   document.getElementById('root')
 );
 

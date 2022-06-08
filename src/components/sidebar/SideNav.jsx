@@ -41,12 +41,12 @@ function SideNav({projectId,setShowModal,openMenu,setOpenMenu,projectList,handle
             />
             <SideLink
               projectId={projectId}
-              data={{ projectName: "Daily" }}
+              data={{ projectName: "Today",projectId:"today" }}
               Icon={CalenderIcon}
             />
             <SideLink
               projectId={projectId}
-              data={{ projectName: "Upcoming" }}
+              data={{ projectName: "Upcoming",projectId:"upcoming" }}
               Icon={InboxIcon}
             />
           </div>

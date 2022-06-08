@@ -3,8 +3,13 @@ import CogIcon from "../../assets/icons/CogIcon";
 import BellIcon from "../../assets/icons/BellIcon";
 import UserCircle from "../../assets/icons/UserCircle";
 import ChevronRightDouble from "../../assets/icons/ChevronRightDouble";
+import {useNavigate} from 'react-router-dom';
+import { auth } from "../../services/firebase/firebase";
 
 function Navbar({setShowSidebar,showSidebar}) {
+
+  const navigate = useNavigate();
+
   return (
     <div className="flex w-full bg-white h-12 py-2 items-center ">
       { !showSidebar && <div className="ml-5 rounded-full hover:bg-slate-100 p-1 transition-all">
@@ -21,7 +26,7 @@ function Navbar({setShowSidebar,showSidebar}) {
                   </div> */}
       </div>
       <div className="mr-1 font-bold font-mono bg-slate-100 px-2 rounded-full flex items-center">
-        <span>{"Vishal Nagar"}</span>
+        <span>{auth.currentUser.displayName}</span>
       </div>
       <div className="px-2 mx-1">
         <button>
@@ -34,7 +39,7 @@ function Navbar({setShowSidebar,showSidebar}) {
         </button>
       </div>
       <div className="px-2 mx-1 ">
-        <button>
+        <button onClick={() => navigate('/app/profile')}>
           <UserCircle className="w-6 h-6 " strokeWidth={1} />
         </button>
       </div>

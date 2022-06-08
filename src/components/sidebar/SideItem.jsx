@@ -22,7 +22,7 @@ function SideItem({Icon,data,projectId}) {
       <div className='h-full align-middle'>
           <Icon strokeWidth={isActive? "2":""}  />
       </div>
-      <div className={`pl-3 text-lg grow text-left ${isActive ? 'font-semibold' : ''}`}>{data.projectName}</div>
+      <div className={`pl-3 text-lg grow text-left w-full ${isActive ? 'font-semibold' : ''}`}>{data.projectName}</div>
         
       </Link>
       {/* </button> */}

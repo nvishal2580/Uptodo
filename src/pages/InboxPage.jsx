@@ -18,31 +18,34 @@ import No_data from "../assets/logos/No_data.svg";
 import Input from "../components/common/Input";
 import { toast } from "react-toastify";
 import InboxCompleted from "./InboxCompleted";
+import Spinner from "../components/common/Spinner";
 
 function InboxPage() {
   const inputRef = useRef(null);
   // const docRef = doc(db, 'users', auth.currentUser.uid, 'Inbox');
   const [showModal, setShowModal] = useState(false);
   const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Task 1",
-      iat: new Date(),
-      isCompleted: false,
-    },
-    {
-      id: 2,
-      title: "Task 2",
-      iat: new Date(),
-      isCompleted: true,
-    },
-    {
-      id: 3,
-      title: "Task 3",
-      iat: new Date(),
-      isCompleted: false,
-    },
+    // {
+    //   id: 1,
+    //   title: "Task 1",
+    //   iat: new Date(),
+    //   isCompleted: false,
+    // },
+    // {
+    //   id: 2,
+    //   title: "Task 2",
+    //   iat: new Date(),
+    //   isCompleted: true,
+    // },
+    // {
+    //   id: 3,
+    //   title: "Task 3",
+    //   iat: new Date(),
+    //   isCompleted: false,
+    // },
   ]);
+
+  const [isProcess, setIsProcess] = useState(true);
   
   const getCompletedTasks = () => {
 
@@ -59,6 +62,7 @@ function InboxPage() {
     });
     setTasks(taskList);
     console.log("inbox page data fatched from database");
+    setIsProcess(false);
   };
 
   useEffect(() => {
@@ -146,6 +150,7 @@ function InboxPage() {
 
   return (
     <div className="pr-40 pt-10 pl-20">
+      {isProcess && (<Spinner />)}
       <div className="flex border-b-[1px] border-b-gray-400 items-center ">
         <div className="text-4xl font-semibold grow ">Inbox</div>
         <button
@@ -172,12 +177,12 @@ function InboxPage() {
           </div>
           <button
             onClick={handleAddTask}
-            className="mx-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            className="mx-2 text-white   focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2  bg-[#6C63FF] hover:bg-[#574ff9]"
           >
             ADD
           </button>
         </div>
-        <div className="pt-6 max-h-96 overflow-y-auto">
+        <div className="pt-6 max-h-[500px] overflow-y-auto">
           {tasks.map(
             (task) =>
               task?.isCompleted === false && (

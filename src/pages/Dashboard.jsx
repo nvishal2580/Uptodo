@@ -9,6 +9,8 @@ import AddProject from "../components/project/AddProject";
 import SideNav from "../components/sidebar/SideNav";
 import Navbar from "../components/sidebar/Navbar";
 import { toast } from "react-toastify";
+import UserProfile from "./UserProfile";
+import Upcoming from "./Upcoming";
 
 function Dashboard() {
   const [projectList, setProjectList] = useState([]);
@@ -63,6 +65,7 @@ function Dashboard() {
 
   const handleLogout = () => {
     auth.signOut();
+    window.gapi.auth2.getAuthInstance().signOut();
     navigate("/");
   };
 
@@ -117,6 +120,7 @@ function Dashboard() {
             <div className="h-screen">
               <Routes>
                 <Route path="/inbox" element={<InboxPage />}></Route>
+                <Route path="/upcoming" element={<Upcoming />}></Route>
                 <Route
                   path="/project/:id"
                   element={
@@ -127,6 +131,7 @@ function Dashboard() {
                   }
                 >
                 </Route>
+                <Route  path="/profile" element={<UserProfile />}></Route>
               </Routes>
             </div>
           </div>
