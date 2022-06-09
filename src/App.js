@@ -6,7 +6,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import NotFound from './pages/NotFound';
 import Dashboard from './pages/Dashboard';
-import {ToastContainer} from 'react-toastify';
+import {toast, ToastContainer} from 'react-toastify';
 import PrivateRoute from './components/auth/PrivateRoute';
 import VerifyAuth from './pages/VerifyAuth';
 import { auth } from './services/firebase/firebase';
@@ -17,8 +17,14 @@ function App() {
   console.log('current user',auth.currentUser)
   var gapi = window.gapi;
   // console.log('i got gapi',gapi);
-
+  
   const clientInit = () => {
+
+    if(gapi === null) {
+      toast.error('Something went wrong! Try later or Refresh page');
+      return;
+    }
+
     gapi.load('client:auth2', () => {
       // console.log('loaded client')
 
