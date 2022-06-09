@@ -1,15 +1,15 @@
+import { collection, doc, getDocs, query, setDoc } from "firebase/firestore";
+import moment from "moment";
 import React, { useEffect } from "react";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import CalendarDatePicker from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import moment from "moment";
+import { toast } from "react-toastify";
+import { v4 as uuid } from 'uuid';
 import AddEvent from "../components/calendar/AddEvent";
-import {toast} from "react-toastify";   
-import { doc, setDoc, getDocs,query, collection } from "firebase/firestore";
-import { auth, db } from "../services/firebase/firebase";
-import {v4 as uuid} from 'uuid';
 import Spinner from "../components/common/Spinner";
+import { auth, db } from "../services/firebase/firebase";
 const localizer = momentLocalizer(moment);
 
  
@@ -83,7 +83,7 @@ export default function Upcoming() {
     // update into database
     try {
         await setDoc(doc(db,'users',auth.currentUser.uid,'Events',randomId),temp);
-        const newList = [...eventList,{...newEvent,id:randomId}];
+        const newList = [...eventList,{...newEvent,start:new Date(newEvent.start),end:new Date(newEvent.end),id:randomId}];
         setEventList(newList);
 
     } catch (error) {

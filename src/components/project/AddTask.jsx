@@ -1,13 +1,11 @@
+import { serverTimestamp } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import Input from "../common/Input2";
-import TagIcon from "../../assets/icons/TagIcon";
-import FlagIcon from "../../assets/icons/FlagIcon";
-import CalenderIcon from "../../assets/icons/CalenderIcon";
-import FilterList from '../common/FilterList';
-import ListItems from "../common/ListItems";
 import DatePicker from "react-datepicker";
 import { v4 as uuidv4 } from 'uuid';
-import { serverTimestamp } from "firebase/firestore";
+import CalenderIcon from "../../assets/icons/CalenderIcon";
+import FlagIcon from "../../assets/icons/FlagIcon";
+import Input from "../common/Input2";
+import ListItems from "../common/ListItems";
 
 function AddTask({type:typedata, handleAddTask, show, setModal, labelList,priorityList,handleAddColumn,handleAddLabel }) {
   const [title, setTitle] = useState("");

@@ -1,14 +1,13 @@
 import React from 'react';
-
-import SideLink from './SideLink';
-import SideItem from './SideItem';
-import InboxIcon from '../../assets/icons/InboxIcon';
 import CalenderIcon from '../../assets/icons/CalenderIcon';
-import ChevronRight from "../../assets/icons/ChevronRight";
-import DotsHorizontal from '../../assets/icons/DotsHorizontal';
-import LogoutIcon from "../../assets/icons/LogoutIcon";
-import Hashtag from '../../assets/icons/Hashtag';
 import ChevronLeftDouble from '../../assets/icons/ChevronLeftDouble';
+import ChevronRight from "../../assets/icons/ChevronRight";
+import Hashtag from '../../assets/icons/Hashtag';
+import InboxIcon from '../../assets/icons/InboxIcon';
+import LogoutIcon from "../../assets/icons/LogoutIcon";
+import SideItem from './SideItem';
+import SideLink from './SideLink';
+
 
 
 

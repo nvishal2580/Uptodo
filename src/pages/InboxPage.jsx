@@ -1,24 +1,17 @@
 import {
-  doc,
-  query,
-  where,
-  collection,
-  setDoc,
-  updateDoc,
-  deleteDoc,
-  getDocs,
+  collection, deleteDoc, doc, getDocs, query, setDoc,
+  updateDoc, where
 } from "firebase/firestore";
-import React, { useState, useEffect, useRef } from "react";
-import { auth, db } from "../services/firebase/firebase";
-import DotsHorizontal from "../assets/icons/DotsHorizontal";
-import CheckIcon from "../assets/icons/CheckIcon";
-import TrashIcon from "../assets/icons/TrashIcon";
-import { v4 as uuid } from "uuid";
-import No_data from "../assets/logos/No_data.svg";
-import Input from "../components/common/Input";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import InboxCompleted from "./InboxCompleted";
+import { v4 as uuid } from "uuid";
+import CheckIcon from "../assets/icons/CheckIcon";
+import DotsHorizontal from "../assets/icons/DotsHorizontal";
+import TrashIcon from "../assets/icons/TrashIcon";
+import No_data from "../assets/logos/No_data.svg";
 import Spinner from "../components/common/Spinner";
+import { auth, db } from "../services/firebase/firebase";
+import InboxCompleted from "./InboxCompleted";
 
 function InboxPage() {
   const inputRef = useRef(null);

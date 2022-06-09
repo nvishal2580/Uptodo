@@ -1,11 +1,9 @@
-import React, { useState } from "react";
-import Column from "./Column";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { v4 as uuidv4 } from "uuid";
-import AddSimpleIcon from '../../assets/icons/AddSimpleIcon';
-import { toast } from "react-toastify";
 import { doc, updateDoc } from "firebase/firestore";
+import React from "react";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { toast } from "react-toastify";
 import { db } from "../../services/firebase/firebase";
+import Column from "./Column";
 
 function areEqueal(prevProps,nextPros){
   return prevProps.tasks && prevProps.columns && prevProps.columnOrder && prevProps.tasks === nextPros.tasks && prevProps.columns === nextPros.columns && prevProps.columnOrder === nextPros.columnOrder;

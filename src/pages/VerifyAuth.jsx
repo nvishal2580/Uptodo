@@ -1,8 +1,8 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { auth } from '../services/firebase/firebase';
-import { AuthContext } from "../services/firebase/Auth";
-import { toast } from 'react-toastify';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { AuthContext } from "../services/firebase/Auth";
+import { auth } from '../services/firebase/firebase';
 
 function VerifyAuth() {
 

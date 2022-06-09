@@ -1,10 +1,10 @@
-import _ from 'lodash';
-import React, { createRef, useState } from 'react'
-import { v4 as uuidv4 } from 'uuid';
-import Comment from './Comment';
+import { serverTimestamp } from 'firebase/firestore';
 import Linkify from 'linkify-react';
-import {serverTimestamp,} from 'firebase/firestore'
+import _ from 'lodash';
+import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { auth } from '../../services/firebase/firebase';
+import Comment from './Comment';
 
 function ActivityTabs({subtasks,handleSubtaskToggle,handleAddSub,handleAddComment,comments,membersList}) {
 

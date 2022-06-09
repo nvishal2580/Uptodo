@@ -1,8 +1,7 @@
-import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import CloseIcon from "../../assets/icons/CloseIcon";
 import DotsHorizontal from "../../assets/icons/DotsHorizontal";
 import { db } from "../../services/firebase/firebase";
 import DropdownButton from "../common/DropdownButton";

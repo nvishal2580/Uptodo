@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
 import _ from 'lodash';
-import DotsHorizontal from "../../assets/icons/DotsHorizontal";
-import LinkIcon from "../../assets/icons/LinkIcon";
-import ChatIcon from "../../assets/icons/ChatIcon";
+import React from "react";
 import CalenderIcon from "../../assets/icons/CalenderIcon";
 import DropdownMenu from "../common/DropdownMenu";
 

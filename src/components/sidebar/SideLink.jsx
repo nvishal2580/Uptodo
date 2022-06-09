@@ -1,5 +1,5 @@
-import React,{useState,useEffect} from 'react';
-import { Link,useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import DotsHorizontal from '../../assets/icons/DotsHorizontal';
 
 function SideLink({Icon,data,projectId}) {

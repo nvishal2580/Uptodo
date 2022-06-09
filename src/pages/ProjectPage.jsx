@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
-import AddTask from "../components/project/AddTask";
-import ProjectContainer from "../components/project/ProjectContainer";
-import {v4 as uuidv4} from 'uuid';
-import data from "../components/project/InitialData";
-import {collection, onSnapshot,doc,runTransaction, Firestore, setDoc,updateDoc, arrayUnion, arrayRemove, deleteDoc, FieldValue, deleteField} from 'firebase/firestore'
-import { auth, db } from "../services/firebase/firebase";
+import { arrayRemove, arrayUnion, deleteDoc, deleteField, doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
 import _, { isEqual } from 'lodash';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { v4 as uuidv4 } from 'uuid';
 import ChatAltIcon from "../assets/icons/ChatAltIcon";
-import UserIcon from "../assets/icons/UsersIcon";
 import DotsHorizontal from "../assets/icons/DotsHorizontal";
+import UserIcon from "../assets/icons/UsersIcon";
+import AddTask from "../components/project/AddTask";
 import ManageTeam from "../components/project/ManageTeam";
-import { Route, Routes ,useParams} from "react-router-dom";
+import ProjectContainer from "../components/project/ProjectContainer";
 import TaskModal from "../components/project/TaskModal";
+import { auth, db } from "../services/firebase/firebase";
 
 
 function ProjectPage({ projectId, setProjectId }) {
@@ -299,7 +298,7 @@ function ProjectPage({ projectId, setProjectId }) {
   
   return (
     <div className="w-full h-full bg-[#f0f1f5]">
-      {loading && <div className="h-full grow flex justify-center items-center" ><div class="animate-spin rounded-full w-20 h-20 border-4 border-b-blue-400 border-solid"></div></div>}
+      {loading && <div className="h-full grow flex justify-center items-center" ><div className="animate-spin rounded-full w-20 h-20 border-4 border-b-blue-400 border-solid"></div></div>}
       {!loading && <div className={`flex flex-col `}>
         <div className="h-[62px] flex items-center ml-6 mb-2 pr-20 border-b-[1px] border-b-slate-300">
           <div className="grow ml-5">

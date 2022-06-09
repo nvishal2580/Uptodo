@@ -1,9 +1,9 @@
 import React from "react";
-import CogIcon from "../../assets/icons/CogIcon";
+import { useNavigate } from 'react-router-dom';
 import BellIcon from "../../assets/icons/BellIcon";
-import UserCircle from "../../assets/icons/UserCircle";
 import ChevronRightDouble from "../../assets/icons/ChevronRightDouble";
-import {useNavigate} from 'react-router-dom';
+import CogIcon from "../../assets/icons/CogIcon";
+import UserCircle from "../../assets/icons/UserCircle";
 import { auth } from "../../services/firebase/firebase";
 
 function Navbar({setShowSidebar,showSidebar}) {

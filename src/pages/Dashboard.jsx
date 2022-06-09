@@ -1,16 +1,16 @@
+import { collection, doc, getDocs, onSnapshot, serverTimestamp, setDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-
-import ProjectPage from "./ProjectPage";
-import { auth, db } from "../services/firebase/firebase";
-import { Routes, useNavigate, Route, useParams } from "react-router-dom";
-import { collection, doc, getDoc, getDocs, setDoc ,ref,onSnapshot, serverTimestamp} from "firebase/firestore";
-import InboxPage from "./InboxPage";
-import AddProject from "../components/project/AddProject";
-import SideNav from "../components/sidebar/SideNav";
-import Navbar from "../components/sidebar/Navbar";
+import { Route, Routes, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import UserProfile from "./UserProfile";
+import AddProject from "../components/project/AddProject";
+import Navbar from "../components/sidebar/Navbar";
+import SideNav from "../components/sidebar/SideNav";
+import { auth, db } from "../services/firebase/firebase";
+import InboxPage from "./InboxPage";
+import ProjectPage from "./ProjectPage";
 import Upcoming from "./Upcoming";
+import UserProfile from "./UserProfile";
+
 
 function Dashboard() {
   const [projectList, setProjectList] = useState([]);

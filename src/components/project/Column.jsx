@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import Task from "./Task";
-import { Droppable, Draggable } from "react-beautiful-dnd";
-import DotsHorizontal from '../../assets/icons/DotsHorizontal';
-import { v4 as uuidv4 } from "uuid";
+import React from "react";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import AddSimpleIcon from "../../assets/icons/AddSimpleIcon";
 import DropdownMenu from "../common/DropdownMenu";
+import Task from "./Task";
 
 
 const Column =({

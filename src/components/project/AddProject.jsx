@@ -1,16 +1,10 @@
+import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
+import _ from "lodash";
 import React, { useEffect, useState } from "react";
-import Input from "../common/Input2";
-import TagIcon from "../../assets/icons/TagIcon";
-import FlagIcon from "../../assets/icons/FlagIcon";
-import CalenderIcon from "../../assets/icons/CalenderIcon";
-import FilterList from "../common/FilterList";
-import ListItems from "../common/ListItems";
-import DatePicker from "react-datepicker";
+import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import { auth, db } from "../../services/firebase/firebase";
-import { getDoc,doc, updateDoc, arrayUnion } from "firebase/firestore";
-import { toast } from "react-toastify";
-import _ from "lodash";
+import Input from "../common/Input2";
 
 function AddProject({ showModal, setShowModal, handleAddProject }) {
   const [title, setTitle] = useState("");

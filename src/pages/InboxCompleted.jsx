@@ -1,16 +1,5 @@
-import {
-    doc,
-    query,
-    where,
-    collection,
-    setDoc,
-    updateDoc,
-    deleteDoc,
-    getDocs,
-  } from "firebase/firestore";
-  import React, { useState, useEffect, useRef } from "react";
-  import { auth, db } from "../services/firebase/firebase";
-  import CheckIcon from "../assets/icons/CheckIcon";
+import React from "react";
+import CheckIcon from "../assets/icons/CheckIcon";
 import TrashIcon from "../assets/icons/TrashIcon";
 
 

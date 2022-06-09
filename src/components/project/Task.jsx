@@ -1,7 +1,6 @@
-import React,{useState} from "react";
+import React from "react";
 import { Draggable } from "react-beautiful-dnd";
 import TaskContainer from "./TaskContainer";
-import TaskModal from "./TaskModal";
 
 
 const Task =React.memo( ({ task, index, handleDeleteTask, columnId,ItemList,handleMenuClick ,setShowTask}) => {

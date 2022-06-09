@@ -1,14 +1,14 @@
+import { GoogleAuthProvider } from "firebase/auth";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../services/firebase/firebase";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-
-import Input from "../components/common/Input";
-import GoogleLogo from "../assets/logos/google_logo.svg";
-import quotes from "../services/quotes";
-import Quote from "../components/common/Quote";
-import GlobeIcon from "../assets/icons/GlobeIcon";
 import { toast } from "react-toastify";
+import GlobeIcon from "../assets/icons/GlobeIcon";
+import GoogleLogo from "../assets/logos/google_logo.svg";
+import Input from "../components/common/Input";
+import Quote from "../components/common/Quote";
+import { auth } from "../services/firebase/firebase";
+import quotes from "../services/quotes";
+
 
 function Login() {
   const [email, setEmail] = useState("");

@@ -1,6 +1,6 @@
-import React, { Component, useState } from 'react';
-import { MentionsInput, Mention } from 'react-mentions'
-import defaultStyle from './DefaultStyle'
+import React, { useState } from 'react';
+import { Mention, MentionsInput } from 'react-mentions';
+import defaultStyle from './DefaultStyle';
 
 function Comment({handleSubmit,membersList}) {
 
