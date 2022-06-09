@@ -40,7 +40,7 @@ function SideNav({projectId,setShowModal,openMenu,setOpenMenu,projectList,handle
             />
             <SideLink
               projectId={projectId}
-              data={{ projectName: "Today",projectId:"today" }}
+              data={{ projectName: "Today",projectId:"daily" }}
               Icon={CalenderIcon}
             />
             <SideLink

@@ -1,6 +1,12 @@
 import {
-  collection, deleteDoc, doc, getDocs, query, setDoc,
-  updateDoc, where
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
 } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -39,23 +45,23 @@ function InboxPage() {
   ]);
 
   const [isProcess, setIsProcess] = useState(true);
-  
-  const getCompletedTasks = () => {
 
-  }
+  const getCompletedTasks = () => {};
 
   const getData = async () => {
-    const taskList = [];
-    const q = query(
-      collection(db, "users", auth.currentUser.uid, "Inbox")
-    );
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      taskList.push(doc.data());
-    });
-    setTasks(taskList);
-    console.log("inbox page data fatched from database");
-    setIsProcess(false);
+    try {
+      const taskList = [];
+      const q = query(collection(db, "users", auth.currentUser.uid, "Inbox"));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        taskList.push(doc.data());
+      });
+      setTasks(taskList);
+      console.log("inbox page data fatched from database");
+      setIsProcess(false);
+    } catch (error) {
+      toast.error("something went wrong");
+    }
   };
 
   useEffect(() => {
@@ -85,25 +91,22 @@ function InboxPage() {
 
   const handleDeleteCompletedTask = async () => {
     const newTaskList = [];
-  try {
-    const q = query(
-      collection(db, "users", auth.currentUser.uid, "Inbox"),
-      where("isCompleted", "==", true)
-    );
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async(doc) => {
-      
-      if(doc.data().isCompleted === true) await deleteDoc(doc.ref);
-  });
-    const newTasksList = tasks.filter((task) => task.isCompleted === false);
-    setTasks(newTasksList);
-  } catch (error) {
-    toast.error("something went wrong!");
-    console.log(error);
-
-  }
-    
-  }
+    try {
+      const q = query(
+        collection(db, "users", auth.currentUser.uid, "Inbox"),
+        where("isCompleted", "==", true)
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async (doc) => {
+        if (doc.data().isCompleted === true) await deleteDoc(doc.ref);
+      });
+      const newTasksList = tasks.filter((task) => task.isCompleted === false);
+      setTasks(newTasksList);
+    } catch (error) {
+      toast.error("something went wrong!");
+      console.log(error);
+    }
+  };
 
   const handleAddTask = async () => {
     const newTask = inputRef.current.value;
@@ -143,7 +146,7 @@ function InboxPage() {
 
   return (
     <div className="pr-40 pt-10 pl-20">
-      {isProcess && (<Spinner />)}
+      {isProcess && <Spinner />}
       <div className="flex border-b-[1px] border-b-gray-400 items-center ">
         <div className="text-4xl font-semibold grow ">Inbox</div>
         <button
@@ -179,7 +182,10 @@ function InboxPage() {
           {tasks.map(
             (task) =>
               task?.isCompleted === false && (
-                <div key={task.id} className="flex mx-6 py-2 border-b-[1px] border-gray-400">
+                <div
+                  key={task.id}
+                  className="flex mx-6 py-2 border-b-[1px] border-gray-400"
+                >
                   <div>
                     <span>{task.title}</span>
                   </div>
@@ -208,7 +214,16 @@ function InboxPage() {
               />
             </div>
           )}
-          {showModal &&  <InboxCompleted handleDeleteCompletedTask={handleDeleteCompletedTask} showModal={showModal} setShowModal={setShowModal} tasks={tasks} handleDeleteTask={handleDeleteTask} handleToggleTask={handleToggleTask} />}
+          {showModal && (
+            <InboxCompleted
+              handleDeleteCompletedTask={handleDeleteCompletedTask}
+              showModal={showModal}
+              setShowModal={setShowModal}
+              tasks={tasks}
+              handleDeleteTask={handleDeleteTask}
+              handleToggleTask={handleToggleTask}
+            />
+          )}
         </div>
       </div>
     </div>

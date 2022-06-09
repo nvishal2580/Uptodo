@@ -78,6 +78,7 @@ export default function Upcoming() {
         end: et,
         allDay: newEvent.allDay,
         isNotify: newEvent.isNotify,
+        id : randomId
     }
 
     // update into database

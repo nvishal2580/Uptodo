@@ -6,6 +6,7 @@ import AddProject from "../components/project/AddProject";
 import Navbar from "../components/sidebar/Navbar";
 import SideNav from "../components/sidebar/SideNav";
 import { auth, db } from "../services/firebase/firebase";
+import Daily from "./Daily";
 import InboxPage from "./InboxPage";
 import ProjectPage from "./ProjectPage";
 import Upcoming from "./Upcoming";
@@ -120,6 +121,7 @@ function Dashboard() {
             <div className="h-screen">
               <Routes>
                 <Route path="/inbox" element={<InboxPage />}></Route>
+                <Route path="/daily" element={<Daily />}></Route>
                 <Route path="/upcoming" element={<Upcoming />}></Route>
                 <Route
                   path="/project/:id"
