@@ -91,25 +91,21 @@ function Dashboard() {
     // ];
     try {
       
-      await setDoc(doc(db,'projects',newProject.id),{
-        projectName:newProject.title,
-        projectId:newProject.id,
-        desctiption:newProject.description,
-        columns:{},
-        tasks:{},
-        columnOrder:[],
-        admin:newProject.admin,
+      await setDoc(doc(db,'projects',newProject.projectId),{
+        ...newProject,
         iat:serverTimestamp()
       })
 
-      await setDoc(doc(db,'users',auth.currentUser.uid,'projects',newProject.id),{
-        projectName:newProject.title,
-        projectId:newProject.id,
+      await setDoc(doc(db,'users',auth.currentUser.uid,'projects',newProject.projectId),{
+        projectName:newProject.projectName,
+        projectId:newProject.projectId,
       })
+
+      toast.success('project added');
 
     } catch (error) {
       console.log(error);
-      toast('error',error.message);
+      toast.error('something went wrong');
     }
 
     setShowModal(false);

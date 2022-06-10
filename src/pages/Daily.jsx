@@ -18,17 +18,32 @@ import Emtpy_cart from "../assets/logos/Empty_cart.svg";
 import Spinner from "../components/common/Spinner";
 import { auth, db } from "../services/firebase/firebase";
 import { useTransition, animated } from "react-spring";
+import EventView from '../components/calendar/EventView';
 
 export default function Daily() {
   const [showEvent, setShowEvent] = React.useState(false);
   const [isPending, setIsPending] = React.useState(true);
   const [value, setValue] = React.useState(new Date());
   const [eventList, setEventList] = React.useState([]);
+  const [selectedEvent, setSelectedEvent] = React.useState({title:"this is title",
+  start:new Date(),
+  end:new Date(),
+  description:"this is description",
+  location:"baran",
+  isNotify:true,
+  id:"this is id"});
 
   const handleDateChange = (date) => {
     console.log(date);
     setValue(date);
   };
+
+  const handleEventCLick = (event) => {
+    // console.log('event clicked',event);
+    setSelectedEvent(event);
+    setShowEvent(!showEvent);
+
+  }
 
   const transitions = useTransition(eventList, {
     from: { x: -50, opacity: 0 },
@@ -107,8 +122,7 @@ export default function Daily() {
   return (
     <div className=" h-screen bg-[#E5E7EB] pt-5 border-t-[1px] border-gray-400 pl-16 pb-20">
       {showEvent && (
-        // <AddEvent setShowEvent={setShowEvent} handleAddEvent={handleAddEvent} />
-        <div>hello</div>
+          <EventView currentEvent={selectedEvent} showEvent={showEvent} setShowEvent={setShowEvent} />
       )}
       {isPending && <Spinner />}
       {!isPending && (
@@ -149,7 +163,7 @@ export default function Daily() {
                       className="flex mx-6 py-2 border-b-[1px] border-gray-400"
                     >
                       <div>
-                        <span>{event.title}</span>
+                        <button onClick={() => handleEventCLick(event)}>{event.title}</button>
                       </div>
                       <div className="grow"></div>
                       <button

@@ -11,6 +11,7 @@ export default function AddEvent({ setShowAddEvent , handleAddEvent }) {
   const [description, setDescription] = useState("");
   const [eventStart, setEventStart] = useState(new Date());
   const [eventEnd, setEventEnd] = useState(new Date());     
+  const [location,setLocation] = useState("");
     
   const [isNotify, setNotify] = useState(false);
 
@@ -21,7 +22,7 @@ export default function AddEvent({ setShowAddEvent , handleAddEvent }) {
     const st = new Date(eventStart).toISOString();
     const et = new Date(eventEnd).toISOString();
     console.log(st,et);
-    let newEvent = {title,description,isNotify,start:st,end:et,allDay:false};
+    let newEvent = {title,description,isNotify,start:st,end:et,allDay:false,location:location};
     if(d1 >= d2){
         // end date is before start date
         newEvent = {...newEvent,allDay:true};
@@ -83,6 +84,17 @@ export default function AddEvent({ setShowAddEvent , handleAddEvent }) {
                     customStyle="focus:outline-slate-400"
                   />
                 </div>
+                <div className="mb-2">
+                  <Input
+                    type="text"
+                    placeholder="Enter Location"
+                    title="Location"
+                    required={false}
+                    value={location}
+                    setValue={setLocation}
+                    customStyle="focus:outline-slate-400"
+                  />
+                </div>
               </div>
               <div className="flex pt-2">
                   <span className="ml-2 mr-2">From</span>
@@ -104,7 +116,7 @@ export default function AddEvent({ setShowAddEvent , handleAddEvent }) {
                   schedule on google calendar
                 </button>
               </div>
-              <div className="w-full p-3 mt-4 ml-2 bg-white rounded flex  ">
+              <div className="w-full p-3 mt-2 ml-2 bg-white rounded flex  ">
                 <div className="w-8 h-8 border rounded-full border-gray-200 flex items-center justify-center">
                   <svg
                     width={16}
@@ -130,7 +142,7 @@ export default function AddEvent({ setShowAddEvent , handleAddEvent }) {
                 </div>
               </div>
               
-              <div className="px-4  py-3 mt-16 sm:px-6 sm:flex sm:flex-row-reverse fixed bottom-2  ">
+              <div className="  py-3 mt-16  sm:flex sm:flex-row-reverse fixed bottom-2  ">
               <button
                 onClick={() => setShowAddEvent(false)}
                 type="button"

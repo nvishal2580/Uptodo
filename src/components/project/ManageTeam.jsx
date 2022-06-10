@@ -38,10 +38,15 @@ function ManageTeam({
           <div className="flex flex-col bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div className="mb-4 flex">
               <div className="grow">
-                <span className="font-bold block border-b-[1px] text-center border-slate-400">
+                <span className="font-bold text-2xl font-mono block border-b-[1px] text-center border-slate-400">
                   Manage Team
                 </span>
               </div>
+              <div className="outline-1 border-[1px] border-gray-300 hover:bg-gray-300 p-2 rounded-md">
+                    <button onClick={() => setShowTeam(false)}>
+                        Close
+                    </button>
+                  </div>
             </div>
             <div className="flex flex-col max-h-96 overflow-x-hidden overflow-y-auto">
               <div className="text-center mb-4">
@@ -54,22 +59,21 @@ function ManageTeam({
                   className="flex group h-8 bg-gray-100 mb-2 pl-5 rounded-md items-center"
                 >
                   <div className="grow">{member.name}</div>
-                  {admin !== null && auth.currentUser.uid === admin.id && (
+                  {/* {admin !== null && auth.currentUser.uid === admin.id && (
                     <div>
                       <button className=" py-1 rounded-full hover:bg-red-100  px-2 hidden group-hover:block ">
                         <CloseIcon className="text-red-500" strokeWidth={2} />
                       </button>
                     </div>
-                  )}
+                  )} */}
                 </div>
               ))}
-            </div>
-            {admin !== null  && auth.currentUser.uid === admin.id &&
+              {admin !== null  && auth.currentUser.uid === admin.id &&
               waitingList !== null &&
               waitingList.length > 0 && (
                 <div className="flex flex-col">
                   <div className="text-center mb-4">
-                    {" "}
+
                     <span className="font-semibold text-lg">waiting List</span>
                   </div>
                   {waitingList?.map((member) => (
@@ -77,7 +81,7 @@ function ManageTeam({
                       key={member.id}
                       className="flex group h-8 bg-gray-100 mb-2 pl-5 rounded-md items-center"
                     >
-                      <div className="grow">{member.name}</div>
+                      <div className="grow"> <span>{member.email}</span> </div>
                       <div>
                         <button
                           onClick={() =>
@@ -106,6 +110,8 @@ function ManageTeam({
                   ))}
                 </div>
               )}
+            </div>
+            
             <div>
               {auth.currentUser.uid === admin.id && (
                 <div className="flex items-center pt-4">
@@ -119,13 +125,10 @@ function ManageTeam({
                       </button>
                     </CopyToClipboard>
                   </div>
-                  <div className="outline-1 border-[1px] border-gray-300 hover:bg-gray-300 p-2 rounded-md">
-                    <button onClick={() => setShowTeam(false)}>
-                        Close
-                    </button>
-                  </div>
+                  
                 </div>
               )}
+              
             </div>
           </div>
         </div>

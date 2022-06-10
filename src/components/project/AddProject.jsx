@@ -22,6 +22,8 @@ function AddProject({ showModal, setShowModal, handleAddProject }) {
       const docRef = doc(db,'projects',projectId);
       const docSnap = await getDoc(docRef);
 
+      console.log('point a');
+
       if(docSnap.exists()){
         const data = docSnap.data();
         console.log('dddta',data);
@@ -29,44 +31,58 @@ function AddProject({ showModal, setShowModal, handleAddProject }) {
         const memberList = data.membersList;
         console.log('wait list ',waitList);
 
-        if(memberList){
-          if(_.findIndex(waitList,{name: auth.currentUser.displayName,id : auth.currentUser.uid}) >= 0){
-            toast.info('Project Already Joined');
+        console.log('point b');
+
+        const userobj = {name: auth.currentUser.displayName,id : auth.currentUser.uid,email:auth.currentUser.email};
+        if(memberList.length > 0){
+          const member = memberList.find(member => member.email === auth.currentUser.email);
+          if(member != null){
+            toast.info("You are already a member of this project");
             return;
           }
         }
-        if(waitList){
-          if(_.findIndex(waitList,{name: auth.currentUser.displayName,id : auth.currentUser.uid}) >= 0){
-            toast.info('Already sent Request');
+        console.log('point c');
+        
+          
+          const member = waitList.find(member => member.email === auth.currentUser.email);
+          console.log('member',member);
+          if(member != null){
+            toast.info('Project Request is already sent');
             return;
           }
+
+          console.log('point d');
           try {
             await updateDoc(docRef,{
-              waitingList : arrayUnion({name: auth.currentUser.displayName,id : auth.currentUser.uid})
+              waitingList : arrayUnion(userobj)
             })
             toast.success('Request Sent !');
           } catch (error) {
             toast.error('Something went Wrong!');
           }
-        }
+        
       }else{
         toast.error('Invalid Project');
       }
+      console.log('point e');
       setProjectId("");
       setShowModal(false);
       return;
     }
 
     handleAddProject({
-      title: title,
+      projectName: title,
       description: details,
-      id: uuidv4().toString(),
+      projectId: uuidv4().toString(),
       admin:{
         id:auth.currentUser.uid,
         name:auth.currentUser.displayName
       },
       waitingList:[],
-      membersList : []
+      membersList : [],
+      columns:{},
+      tasks:{},
+      columnOrder:[],
     });
 
   };

@@ -98,12 +98,7 @@ function Register() {
             <div className='bg-white lg:w-1/2 sm:w-full h-full'>
                 <form className='lg:mx-40 lg:pt-24 mx-10 pt-10' onSubmit={handleSubmit} >
                     <h1 className='text-4xl text-[#083A41] my-2 font-semibold'>Join us</h1>
-                    <button className='rounded text-zinc-800 shadow p-0 my-2 w-full hover:bg-slate-100' >
-                        <span className='inline-block'>
-                              <img className='h-8 w-auto' src={GoogleLogo} alt="Google Logo" />
-                        </span>
-                       <span className='inline-block align-top p-1'>Register with Google </span> 
-                    </button>
+                    
                     <Input type='email' title='Email Address' placeholder='enter email' value={email} setValue={setEmail} required={true} />
                     <Input type='password' title='Password' placeholder='set password' value={password} setValue={setPassword} required={true} />
                     <Input type='text' title='Username' placeholder='set username' value={username} setValue={setUsername} required={true} />
