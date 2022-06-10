@@ -48,6 +48,8 @@ function Dashboard() {
 
   useEffect( () => {
 
+   
+
     const unsub = onSnapshot(collection(db,'users',auth.currentUser.uid,'projects'), async(snapshot) => {
       const projectRef = collection(db,'users',auth.currentUser.uid,'projects');
       const projectSnap = await getDocs(projectRef);
@@ -60,13 +62,25 @@ function Dashboard() {
       setProjectList(dataList);
     });
 
-    return () => unsub();
+    // window.addEventListener('beforeunload',handleCloseEvent);
+      
+    return () => {
+      unsub();
+      // window.removeEventListener('beforeunload',handleCloseEvent);
+    }
 
   },[])
 
+  
+
+  // const handleCloseEvent = (event) => {
+  //     handleLogout();
+  // }
+
   const handleLogout = () => {
+    console.log("logout");
     auth.signOut();
-    window.gapi.auth2.getAuthInstance().signOut();
+    if(window.gapi && window.gapi.auth2 && window.gapi.auth2.getAuthInstance()) window.gapi.auth2.getAuthInstance().signOut();
     navigate("/");
   };
 

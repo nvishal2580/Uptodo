@@ -14,9 +14,10 @@ import { auth } from './services/firebase/firebase';
 
 
 function App() {
-  console.log('current user',auth.currentUser)
+  // console.log('current user',auth.currentUser)
   var gapi = window.gapi;
   // console.log('i got gapi',gapi);
+  
   
   const clientInit = () => {
 
@@ -42,7 +43,8 @@ function App() {
   useEffect(()=>{ 
 
     clientInit();
-
+    console.log('environment',process.env.NODE_ENV);  
+    
       //  const script = document.createElement("script");
       //   script.src = "https://apis.google.com/js/platform.js";
       //   script.async = true;
@@ -77,7 +79,10 @@ function App() {
         
   },[]);
 
-
+  if(process.env.NODE_ENV === 'production') {
+    // console.log('okey last one');
+    console.log = function no_console(){};
+}
   return (
     <div className="App">
       <ToastContainer autoClose={3000} />

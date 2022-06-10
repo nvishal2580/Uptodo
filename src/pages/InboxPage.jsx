@@ -18,6 +18,7 @@ import No_data from "../assets/logos/No_data.svg";
 import Spinner from "../components/common/Spinner";
 import { auth, db } from "../services/firebase/firebase";
 import InboxCompleted from "./InboxCompleted";
+import { useTransition, animated } from "react-spring";
 
 function InboxPage() {
   const inputRef = useRef(null);
@@ -44,9 +45,15 @@ function InboxPage() {
     // },
   ]);
 
-  const [isProcess, setIsProcess] = useState(true);
-
-  const getCompletedTasks = () => {};
+  const [isProcess, setIsProcess] = useState(false);
+  const transitions = useTransition(
+    tasks.filter((task) => task.isCompleted === false),
+    {
+      from: { x: -50, opacity: 0 },
+      enter: { x: 0, opacity: 1 },
+      leave: { x: 50, opacity: 0 },
+    }
+  );
 
   const getData = async () => {
     try {
@@ -90,7 +97,6 @@ function InboxPage() {
   };
 
   const handleDeleteCompletedTask = async () => {
-    const newTaskList = [];
     try {
       const q = query(
         collection(db, "users", auth.currentUser.uid, "Inbox"),
@@ -120,6 +126,7 @@ function InboxPage() {
       ...tasks,
       { id: randomId, title: newTask, iat: new Date(), isCompleted: false },
     ];
+
     try {
       await setDoc(doc(db, "users", auth.currentUser.uid, "Inbox", randomId), {
         title: newTask,
@@ -136,6 +143,7 @@ function InboxPage() {
 
   const handleDeleteTask = async (id) => {
     const newTaskList = tasks.filter((task) => task.id !== id);
+
     try {
       await deleteDoc(doc(db, "users", auth.currentUser.uid, "Inbox", id));
     } catch (error) {
@@ -178,33 +186,31 @@ function InboxPage() {
             ADD
           </button>
         </div>
-        <div className="pt-6 max-h-[500px] overflow-y-auto">
-          {tasks.map(
-            (task) =>
-              task?.isCompleted === false && (
-                <div
-                  key={task.id}
-                  className="flex mx-6 py-2 border-b-[1px] border-gray-400"
-                >
-                  <div>
-                    <span>{task.title}</span>
-                  </div>
-                  <div className="grow"></div>
-                  <button
-                    onClick={() => handleToggleTask(task.id)}
-                    className="mx-2 hover:text-green-700 hover:font-bold rounded-full"
-                  >
-                    <CheckIcon />
-                  </button>
-                  <button
-                    onClick={() => handleDeleteTask(task.id)}
-                    className="mx-2 hover:text-red-700"
-                  >
-                    <TrashIcon />
-                  </button>
-                </div>
-              )
-          )}
+        <div className="pt-6 max-h-[500px] overflow-y-auto overflow-x-hidden">
+          {transitions((style, task) => (
+            <animated.div
+              style={style}
+              key={task.id}
+              className="flex mx-6 py-2 border-b-[1px] border-gray-400 overflow-hidden"
+            >
+              <div>
+                <span>{task.title}</span>
+              </div>
+              <div className="grow"></div>
+              <button
+                onClick={() => handleToggleTask(task.id)}
+                className="mx-2 hover:text-green-700 hover:font-bold rounded-full"
+              >
+                <CheckIcon />
+              </button>
+              <button
+                onClick={() => handleDeleteTask(task.id)}
+                className="mx-2 hover:text-red-700"
+              >
+                <TrashIcon />
+              </button>
+            </animated.div>
+          ))}
           {tasks.length === 0 && (
             <div className="flex justify-center">
               <img

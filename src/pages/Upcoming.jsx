@@ -67,7 +67,9 @@ export default function Upcoming() {
 
   const handleAddEvent = async(newEvent) => {
       const randomId  = uuid();
-   
+    let validUser  = true;
+    if( window.gapi && window.gapi.auth2.getAuthInstance().isSignedIn.get()===false) validUser = false;
+
     console.log(myEventsList);  
     const st = new Date(newEvent.start).getTime();
     const et = new Date(newEvent.end).getTime();
@@ -77,7 +79,7 @@ export default function Upcoming() {
         start: st,
         end: et,
         allDay: newEvent.allDay,
-        isNotify: newEvent.isNotify,
+        isNotify: validUser ? newEvent.isNotify : false,
         id : randomId
     }
 
@@ -93,7 +95,7 @@ export default function Upcoming() {
 
     if(newEvent.isNotify){
 
-        if(window.gapi.auth2.getAuthInstance().isSignedIn.get()===false){
+        if(!validUser){
             toast.info('To add event in google calendar you need to login using Google method ');
             return;
         }

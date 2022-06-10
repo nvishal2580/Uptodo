@@ -17,9 +17,11 @@ function Login() {
 
   const handleGoogleAuth = async () => {
     // due to use of google auth api and intigrating them with firebase we have to try different approact..
+    
     try {
       const googleAuth = await window.gapi.auth2.getAuthInstance();
       console.log('google auth',googleAuth);
+      if(googleAuth) googleAuth.signOut()
       const googleUser = await googleAuth.signIn();
       console.log('google user',googleUser);
       const token = googleUser.getAuthResponse().id_token;
@@ -66,11 +68,15 @@ function Login() {
     //   });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     // for user login
     e.preventDefault();
 
-    auth
+    try {
+      const googleAuth = await window.gapi.auth2.getAuthInstance();
+      console.log('google auth',googleAuth);
+      if(googleAuth) googleAuth.signOut()
+      auth
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -84,6 +90,11 @@ function Login() {
       .catch((error) => {
         toast.error("Invalid email or password !");
       });
+    } catch (error) {
+      toast.error('something went wrong');
+    }
+
+    
   };
 
   return (
