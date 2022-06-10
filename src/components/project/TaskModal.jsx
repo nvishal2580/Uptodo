@@ -25,6 +25,7 @@ function TaskModal({setShowTask,task,handleAddLabel,labelList,projectId,membersL
   const [comments,setComments] = useState([]);
   const [labels,setLabels] = useState([]);
   const [members,setMembers] = useState([]);
+  const [createdBy,setCreatedBy] = useState('');
 
   const handleSubtaskToggle = async(subtask) => {
 
@@ -112,6 +113,7 @@ function TaskModal({setShowTask,task,handleAddLabel,labelList,projectId,membersL
        setComments(comm);
        setLabels(data.labels);
        setMembers(data.members);
+       setCreatedBy(data.createdBy);
         }
 
       })
@@ -163,7 +165,7 @@ function TaskModal({setShowTask,task,handleAddLabel,labelList,projectId,membersL
               <div className="flex flex-col">
                   <div className="flex mb-3">
                     <div className="w-1/5 text-gray-600">Created By</div>
-                    <div className="w-4/5">{"Aman Gupta"}</div>
+                    <div className="w-4/5">{createdBy.name}</div>
                   </div>
                   <div className="flex mb-3">
                     <div className="w-1/5 text-gray-600">Assign To</div>
@@ -186,7 +188,7 @@ function TaskModal({setShowTask,task,handleAddLabel,labelList,projectId,membersL
                          {label.name}
                        </span>)}
                        <div>
-                         <DropdownButton data={labels} dataList={labelList} setData={handleSetLabels}  handleAddLabel={handleAddLabel} />
+                         <DropdownButton data={labels} dataList={labelList} setData={handleSetLabels}  handleAddLabel={handleAddLabel} extraAdd={true} />
                        </div>
                     </div>
                   </div>

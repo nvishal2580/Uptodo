@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import ListItems from './ListItems';
 
 const FilterList = React.memo(({data,labels,setLabels,selectMultiple,handleAddLabel,extraAdd = true}) => {
-  const [contactList, setContactList] = useState(data)
+  const [contactList, setContactList] = useState([])
   const [filterQuery, setFilterQuery] = useState("")
 
   console.log('filterlist rendered');
@@ -27,6 +27,10 @@ const FilterList = React.memo(({data,labels,setLabels,selectMultiple,handleAddLa
     }
   }, [data, filterQuery])
 
+  useEffect(() => {
+      setContactList(data);
+  }, [])
+
   return (
     <div className={" max-w-60 overflow-auto"}>
       <section>
@@ -38,9 +42,9 @@ const FilterList = React.memo(({data,labels,setLabels,selectMultiple,handleAddLa
             maxLength={12}
           />
       </section>
-      <section className={""}>
+      <section >
         {<ListItems data={labels} setData={setLabels} list={contactList} selectMultiple={selectMultiple} />}
-        {extraAdd && contactList && filterQuery.length > 1 && (contactList.length !== 1 || contactList[0].name !== filterQuery) && (
+        {extraAdd  && contactList && filterQuery.length > 1 && (contactList.length !== 1 || contactList[0].name !== filterQuery) && (
           <div className='flex hover:bg-gray-200'>
             <button onClick={() => handleAddLabel(filterQuery)} className='ml-2  max-w-[200px] overflow-hidden'>
               Add
