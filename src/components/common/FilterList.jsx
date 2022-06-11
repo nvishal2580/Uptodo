@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react'
 import ListItems from './ListItems';
 
-const FilterList = React.memo(({data,labels,setLabels,selectMultiple,handleAddLabel,extraAdd = true}) => {
+const FilterList = React.memo(({data,labels,setLabels,selectMultiple,handleAddLabel,extraAdd}) => {
   const [contactList, setContactList] = useState([])
   const [filterQuery, setFilterQuery] = useState("")
 
-  console.log('filterlist rendered');
+  console.log('filterlist rendered',contactList,data);
 
   useEffect(() => {
-    if (!filterQuery) {
+    if (filterQuery.length === 0) {
       setContactList(data);
     } else {
       const queryString = filterQuery.toLowerCase()
@@ -25,11 +25,16 @@ const FilterList = React.memo(({data,labels,setLabels,selectMultiple,handleAddLa
       })
       setContactList(filteredData)
     }
-  }, [data, filterQuery])
+  }, [data,filterQuery])
 
   useEffect(() => {
-      setContactList(data);
-  }, [])
+      if(data == null){
+        setContactList([]);
+      }
+      else {
+        setContactList(data);
+      }
+  }, [data])
 
   return (
     <div className={" max-w-60 overflow-auto"}>
@@ -44,7 +49,7 @@ const FilterList = React.memo(({data,labels,setLabels,selectMultiple,handleAddLa
       </section>
       <section >
         {<ListItems data={labels} setData={setLabels} list={contactList} selectMultiple={selectMultiple} />}
-        {extraAdd  && contactList && filterQuery.length > 1 && (contactList.length !== 1 || contactList[0].name !== filterQuery) && (
+        {extraAdd  && filterQuery.length > 1 &&  (
           <div className='flex hover:bg-gray-200'>
             <button onClick={() => handleAddLabel(filterQuery)} className='ml-2  max-w-[200px] overflow-hidden'>
               Add

@@ -182,7 +182,7 @@ function TaskModal({setShowTask,task,handleAddLabel,labelList,projectId,membersL
                     <div className="w-1/5 text-gray-600">Due Date</div>
                     <div className="w-4/5">{task.deadline?.toDate().toLocaleDateString("en-US", options)}</div>
                   </div><div className="flex mb-3">
-                    <div className="w-1/5 text-gray-600">Labels</div>
+                    {/* <div className="w-1/5 text-gray-600">Labels</div>
                     <div className="w-4/5 flex">
                        {labels?.map((label,ind) => <span key={label.id} className={` px-2 rounded mr-2 pb-1 ${colors[ind%colors.length]}`} >
                          {label.name}
@@ -190,7 +190,7 @@ function TaskModal({setShowTask,task,handleAddLabel,labelList,projectId,membersL
                        <div>
                          <DropdownButton data={labels} dataList={labelList} setData={handleSetLabels}  handleAddLabel={handleAddLabel} extraAdd={true} />
                        </div>
-                    </div>
+                    </div> */}
                   </div>
               </div>
               <hr />
