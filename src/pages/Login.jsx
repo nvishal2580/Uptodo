@@ -85,7 +85,7 @@ function Login() {
           navigate("/app/verify");
           return;
         }
-        navigate("/app");
+        navigate("/app/inbox");
       })
       .catch((error) => {
         toast.error("Invalid email or password !");
