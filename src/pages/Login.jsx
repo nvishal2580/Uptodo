@@ -31,7 +31,7 @@ function Login() {
       console.log('credential',credential);
        auth.signInWithCredential(credential).then(() => {
          toast.success("Logged in successfully");
-         navigate("/app");
+         navigate("/app/inbox");
          });
     } catch (error) {
       console.log(error);
