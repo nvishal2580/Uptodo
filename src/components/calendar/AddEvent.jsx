@@ -3,8 +3,7 @@ import Input from "../common/Input2";
 import DateTimePicker from "react-datetime-picker";
 import ClockIcon from "../../assets/icons/ClockIcon";
 import moment from "moment";
-import { ReactMultiEmail, isEmail } from 'react-multi-email';
-import 'react-multi-email/style.css';
+
 
 export default function AddEvent({ setShowAddEvent , handleAddEvent }) {
   const [title, setTitle] = useState("");
